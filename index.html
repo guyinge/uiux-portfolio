@@ -288,26 +288,6 @@
       text-transform:uppercase; letter-spacing:.06em;
     }
 
-    /* 荣誉/奖项徽章列表 — 金色星标 + 文字 */
-    .work-honors {
-      display:flex; flex-direction:column; gap:.45rem; margin-top:.7rem;
-    }
-    .honor-badge {
-      display:flex; align-items:center; gap:.55rem;
-      font-family:var(--font-mono);
-      font-size:.74rem; color:#fbbf24; /* 金黄色 */
-      letter-spacing:.01em;
-      line-height:1.4;
-    }
-    /* 纯 CSS 星标，避免 emoji 不渲染 */
-    .honor-badge .badge-icon {
-      flex-shrink:0;
-      width:8px; height:8px;
-      background:#fbbf24;
-      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-      opacity:.95;
-    }
-
     .work-thumb {
       width:100%; aspect-ratio:16/10; border-radius:12px; overflow:hidden;
       position:relative;
