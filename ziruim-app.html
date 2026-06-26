@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>自如 APP 首页全链路升级 — LEI Portfolio</title>
+  <title>自如APP首页全链路升级 — LEI Portfolio</title>
   <style>
     /* ===== Reset & Base ===== */
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -30,25 +30,25 @@
     a{ color:inherit; text-decoration:none; transition:color .25s; }
     a:hover{ color:var(--accent-purple); }
 
-    /* ===== Navbar ===== */
+    /* ===== Navbar（参考截图1：左返回+右Logo） ===== */
     .cs-nav{
       position:fixed; top:0; left:0; right:0; z-index:1000;
       display:flex; align-items:center; justify-content:space-between;
       padding:0 clamp(1.25rem,4vw,3rem);
       height:64px;
-      backdrop-filter:blur(20px); background:rgba(8,8,10,.82);
+      backdrop-filter:blur(20px); background:rgba(8,8,10,.85);
       border-bottom:1px solid var(--border-subtle);
     }
     .cs-back{
       display:flex; align-items:center; gap:.5rem;
-      font-size:.72rem; color:var(--text-secondary);
-      letter-spacing:.1em; text-transform:uppercase; cursor:pointer;
-      transition:color .25s;
+      font-size:.70rem; color:var(--text-secondary);
+      letter-spacing:.12em; text-transform:uppercase; cursor:pointer;
+      transition:color .25s; font-weight:500;
     }
     .cs-back:hover{ color:var(--text-primary); }
-    .cs-back svg{ width:15px; height:15px; stroke:currentColor; stroke-width:2; fill:none;}
+    .cs-back svg{ width:14px; height:14px; stroke:currentColor; stroke-width:2.2; fill:none;}
     .cs-logo{
-      font-size:1.2rem; font-weight:800; letter-spacing:.12em;
+      font-size:1.2rem; font-weight:800; letter-spacing:.14em;
       background:var(--gradient-main); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
       background-clip:text;
     }
@@ -56,104 +56,191 @@
     /* ===== Container ===== */
     .container{ max-width:1100px; margin:0 auto; padding:0 clamp(1.25rem,4vw,2.5rem); }
 
-    /* ===== Hero ===== */
+    /* ===== Hero（参考截图1） ===== */
     .cs-hero{
-      min-height:68vh; display:flex; flex-direction:column;
-      justify-content:center; padding-top:90px; padding-bottom:3.5rem;
+      min-height:72vh; display:flex; flex-direction:column;
+      justify-content:center; padding-top:100px; padding-bottom:3rem;
       position:relative; overflow:hidden;
     }
-    /* 右上角呼吸圆点（参考截图） */
-    .cs-hero::after{
-      content:''; position:absolute; top:6%; left:3%;
-      width:12px; height:12px; border-radius:50%;
-      background:#fff; animation:dotPulse 2.5s ease-in-out infinite;
-      opacity:.35;
+    /* 呼吸白圆点 — 参考截图1右侧小圆点 */
+    .hero-dot{
+      position:absolute; right:clamp(1.5rem,5vw,4rem); top:28%;
+      width:10px; height:10px; border-radius:50%;
+      background:#fff; animation:dotBreath 2.6s ease-in-out infinite;
+      opacity:.32;
     }
-    @keyframes dotPulse {
-      0%,100%{opacity:.25; transform:scale(.85)}
-      50%{opacity:.95; transform:scale(1)}
+    @keyframes dotBreath {
+      0%,100%{opacity:.22; transform:scale(.82)}
+      50%{opacity:.92; transform:scale(1)}
     }
 
     .cs-hero h1{
-      font-size:clamp(2.4rem,6.5vw,4.5rem); font-weight:900;
-      line-height:1.08; letter-spacing:-.02em; text-transform:uppercase;
+      font-size:clamp(2.2rem,6vw,4.2rem); font-weight:900;
+      line-height:1.08; letter-spacing:-.02em;
+    }
+    .cs-hero h1 span.highlight{
+      color:#c084fc; /* 亮紫色强调 */
     }
     .cs-subtitle{
-      font-family:var(--font-mono); font-size:.74rem; color:var(--text-secondary);
-      letter-spacing:.18em; text-transform:uppercase; margin-top:.55rem;
-      opacity:.6;
+      font-family:var(--font-mono); font-size:.70rem; color:var(--text-secondary);
+      letter-spacing:.20em; text-transform:uppercase; margin-top:.5rem;
+      opacity:.55; font-weight:400;
     }
 
-    /* Meta row */
+    /* Meta 行 — 参考截图1三列布局 TIME / ROLE / HONORS */
     .cs-meta{
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-      gap:2.2rem; margin-top:2.6rem; padding-top:1.8rem;
+      display:grid; grid-template-columns:repeat(3, 1fr);
+      gap:2rem; margin-top:2.8rem; padding-top:2rem;
       border-top:1px solid var(--border-subtle);
-      max-width:720px;
+      max-width:780px;
     }
     .cs-meta-item dt{
-      font-family:var(--font-mono); font-size:.66rem; color:var(--accent-green);
-      text-transform:uppercase; letter-spacing:.14em; margin-bottom:.32rem;
+      font-family:var(--font-mono); font-size:.64rem; color:var(--accent-green);
+      text-transform:uppercase; letter-spacing:.15em; margin-bottom:.35rem; font-weight:600;
     }
-    .cs-meta-item dd{ font-size:.86rem; color:var(--text-primary); line-height:1.5; }
+    .cs-meta-item dd{ font-size:.86rem; color:var(--text-primary); line-height:1.55; }
+
+    /* 荣誉星标行 */
     .honor-row{
-      display:flex; align-items:center; gap:.42rem;
-      font-family:var(--font-mono); font-size:.70rem; color:#fbbf24;
+      display:flex; flex-direction:column; gap:.28rem;
     }
-    .honor-star{ width:7px;height:7px; background:#fbbf24;
+    .honor-item{
+      display:flex; align-items:center; gap:.45rem;
+      font-family:var(--font-mono); font-size:.70rem; color:#fbbf24;
+      line-height:1.45;
+    }
+    .honor-star{
+      width:7px;height:7px; background:#fbbf24; flex-shrink:0;
       clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
-      flex-shrink:0;
     }
 
-    /* ===== Section ===== */
-    .sec{ padding:clamp(3rem,7vw,5.5rem) 0; }
-    .sec-head{ margin-bottom:2.2rem; }
+    /* ===== Section 通用 ===== */
+    .sec{ padding:clamp(3.2rem,7vw,5.5rem) 0; }
+    .sec-head{ margin-bottom:2rem; }
     .sec-title{
-      font-size:clamp(1.4rem,3vw,2.2rem); font-weight:800;
+      font-size:clamp(1.35rem,2.8vw,2rem); font-weight:800;
       letter-spacing:-.01em; position:relative;
-      padding-left:18px;
+      padding-left:18px; display:inline-block;
     }
     .sec-title::before{
-      content:''; position:absolute; left:0; top:.22em;
+      content:''; position:absolute; left:0; top:.18em;
       width:4px; height:1em; background:var(--accent-purple); border-radius:2px;
     }
 
-    /* Text block — 参考截图的段落风格 */
-    .cs-text{ font-size:.88rem; color:var(--text-secondary); line-height:1.88; max-width:820px; }
-    .cs-text p{ margin-bottom:1.1em; text-align:justify; }
+    /* 段落文本 — 参考截图1风格 */
+    .cs-text{
+      font-size:.88rem; color:var(--text-secondary); line-height:1.92;
+      max-width:840px;
+    }
+    .cs-text p{ margin-bottom:1.05em; text-align:justify; }
     .cs-text strong{ color:var(--text-primary); font-weight:600; }
+    .cs-text ul{
+      list-style:none; padding:0; margin-top:.8rem;
+    }
+    .cs-text ul li{
+      position:relative; padding-left:1.2rem; margin-bottom:.5rem;
+    }
+    .cs-text ul li::before{
+      content:'•'; position:absolute; left:0;
+      color:var(--accent-purple); font-weight:bold;
+    }
 
-    /* Full-width image */
+    /* ===== 图片展示 ===== */
     .cs-img-full{
-      width:100%; border-radius:12px; overflow:hidden;
+      width:100%; border-radius:14px; overflow:hidden;
       border:1px solid var(--border-subtle); background:var(--bg-card);
       margin:1.5rem 0;
     }
     .cs-img-full img{ width:100%; height:auto; display:block; object-fit:cover; }
 
+    /* 双图并排 — 参考截图2证书区域 */
+    .img-pair{
+      display:grid; grid-template-columns:1fr 1fr; gap:1.2rem;
+      margin:1.5rem 0;
+    }
+    .img-pair .cs-img-full{ margin:0; }
+
+    /* Hero大图 — 参考截图2右侧手机mockup */
+    .hero-showcase{
+      margin-top:3.5rem;
+      position:relative;
+    }
+    .hero-showcase img{
+      width:100%; border-radius:16px;
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    /* ===== 项目荣誉区（参考截图2底部样式） ===== */
+    .honor-section{
+      display:flex; align-items:flex-start; gap:3rem;
+      margin-top:1.5rem; flex-wrap:wrap;
+    }
+    .honor-certs{
+      flex:0 0 auto;
+      display:flex; gap:1rem;
+    }
+    .honor-certs .cert-thumb{
+      width:160px; height:220px; border-radius:10px; overflow:hidden;
+      border:1px solid rgba(251,191,36,.2); background:var(--bg-card);
+    }
+    .honor-certs .cert-thumb img{
+      width:100%; height:100%; object-fit:cover;
+    }
+    .honor-list{
+      flex:1; min-width:260px;
+    }
+    .honor-list-item{
+      display:flex; align-items:flex-start; gap:.6rem;
+      padding:.65rem 0; border-bottom:1px solid rgba(255,255,255,.04);
+      font-size:.84rem; line-height:1.5;
+    }
+    .honor-list-item:last-child{ border-bottom:none; }
+    .honor-bullet{
+      color:var(--accent-orange); font-weight:700; font-size:1rem;
+      flex-shrink:0; line-height:1.4;
+    }
+
+    /* 底部信息条 — 参考截图2 */
+    .project-meta-bar{
+      display:flex; align-items:center; gap:2rem;
+      margin-top:3rem; padding:1.5rem 0;
+      border-top:1px solid var(--border-subtle);
+      flex-wrap:wrap;
+      font-family:var(--font-mono); font-size:.74rem;
+      color:var(--text-secondary);
+    }
+    .meta-badge{
+      padding:.3rem .85rem; border-radius:6px;
+      background:rgba(168,85,247,.08);
+      color:var(--accent-purple); font-weight:600;
+    }
+
     /* Back link */
     .back-link{
       display:inline-flex; align-items:center; gap:.45rem;
-      margin-top:3.5rem; font-size:.76rem; color:var(--text-secondary);
+      margin-top:3.5rem; font-size:.74rem; color:var(--text-secondary);
       letter-spacing:.08em; text-transform:uppercase;
       transition:color .25s; cursor:pointer;
     }
     .back-link:hover{ color:var(--accent-purple); }
-    .back-link svg{ width:15px; height:15px; stroke:currentColor; stroke-width:2; fill:none;}
+    .back-link svg{ width:14px; height:14px; stroke:currentColor; stroke-width:2.2; fill:none;}
 
-    /* Footer spacer */
     .footer-spacer{ height:120px; }
 
     /* Scroll reveal */
-    .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal{ opacity:0; transform:translateY(30px); transition:opacity .75s ease,transform .75s ease; }
     .reveal.visible{ opacity:1; transform:translateY(0); }
 
     /* Responsive */
-    @media(max-width:850px){
+    @media(max-width:860px){
       .cs-meta{ grid-template-columns:1fr 1fr; gap:1.5rem; }
+      .honor-section{ flex-direction:column; gap:2rem; }
+      .img-pair{ grid-template-columns:1fr; }
     }
     @media(max-width:550px){
       .cs-meta{ grid-template-columns:1fr; }
+      .honor-certs{ flex-wrap:wrap; }
+      .honor-certs .cert-thumb{ width:140px; height:190px; }
     }
   </style>
 </head>
@@ -168,11 +255,12 @@
     <div class="cs-logo">LEI.</div>
   </nav>
 
-  <!-- Hero -->
+  <!-- Hero — 参考截图1布局 -->
   <section class="cs-hero">
+    <div class="hero-dot"></div>
     <div class="container">
-      <h1>自如APP<br>首页全链路升级项目</h1>
-      <div class="cs-subtitle">ZIRUIM APP FULL-LINK UPGRADE PROJECT</div>
+      <h1>自如<span class="highlight">APP</span><br>首页全链路升级项目</h1>
+      <div class="cs-subtitle">ZIRUIM APP HOMEPAGE FULL-LINK UPGRADE PROJECT</div>
 
       <dl class="cs-meta reveal">
         <div class="cs-meta-item">
@@ -181,16 +269,21 @@
         </div>
         <div class="cs-meta-item">
           <dt>ROLE</dt>
-          <dd>UI/UX Design<br><span style="color:var(--text-secondary)">Interaction</span></dd>
+          <dd>UI/UX Design<br><span style="color:var(--text-secondary)">Interaction Design</span></dd>
         </div>
         <div class="cs-meta-item">
           <dt>HONORS</dt>
-          <dd>
-            <span class="honor-row"><span class="honor-star"></span>第十九届中国之星设计大奖 铜奖</span><br>
-            <span class="honor-row" style="margin-top:.3rem;"><span class="honor-star"></span>2024–2025 年度国家奖学金</span>
+          <dd class="honor-row">
+            <span class="honor-item"><span class="honor-star"></span>第十九届中国之星设计大奖 铜奖</span>
+            <span class="honor-item"><span class="honor-star"></span>2024–2025 年度国家奖学金</span>
           </dd>
         </div>
       </dl>
+
+      <!-- Hero 大图 — 使用PDF提取的封面图（iPhone mockup） -->
+      <div class="hero-showcase reveal">
+        <img src="assets/yihuan/page_1.png" alt="自如APP首页全链路升级 — iPhone Mockup">
+      </div>
     </div>
   </section>
 
@@ -201,36 +294,124 @@
         <h2 class="sec-title">项目背景</h2>
       </div>
       <div class="cs-text reveal">
-        <p>200 多年来，随着工业化进程的深入、大量温室气体（主要是二氧化碳）的排出，导致全球气温升高，气候变化，这已是不争的事实。社会的发展需要人类接到了从工业文明时代向生态文明时代转型的时期，大力提倡低碳经济、建设生态文明，成为这一时期的主旋律。与之相应，在生活层面，倡导和践行低碳生活，已成为每个公民在构建生态文明时代义不容辞的环境责任。</p>
+        <p>自如作为国内长租公寓行业的头部品牌，其APP首页承载着<strong>房源浏览、搜索筛选、合同签约、管家沟通、服务预约</strong>等核心业务入口。随着业务线不断扩展，首页信息密度持续攀升，用户在找房过程中面临诸多体验痛点。</p>
+        <p>通过对<strong>8位22–35岁上海租客用户</strong>的深度访谈，以及<strong>100+份问卷调研</strong>和<strong>15位用户可用性测试</strong>，我们识别出以下核心问题：</p>
+        <ul>
+          <li><strong>首页租房业务入口分散</strong>——72%的用户希望首页优先展示租房核心业务，减少次要功能干扰</li>
+          <li><strong>房源列表页转化率低</strong>——房源推荐页的吸引力不足，点击后跳转流失率高</li>
+          <li><strong>合同等辅助决策信息不受重视</strong>——86%的用户需要房源页面强调租金和合同等重要决策信息</li>
+          <li><strong>IM管家沟通存在时效差</strong>——59%的用户容易在无意间发起管家沟通，干扰决策流程</li>
+        </ul>
+      </div>
+      <!-- 用户调研图 -->
+      <div class="cs-img-full reveal">
+        <img src="assets/yihuan/page_3.png" alt="用户调研 — 定性访谈 & 可用性测试">
       </div>
     </div>
   </section>
 
-  <!-- 项目介绍 -->
+  <!-- 项目介绍 / 设计策略 -->
   <section class="sec" id="intro">
     <div class="container">
       <div class="sec-head reveal">
         <h2 class="sec-title">项目介绍</h2>
       </div>
       <div class="cs-text reveal">
-        <p>易换 APP 是一个二手回收平台，从用户端痛点出发，以趣味年轻的设计师格将来进行场景打造打通过，通过积算累积回收量获得收益或由该和详细信息的回收点进行用心的甄别秀。力图创造一个方便、高效、有趣的回收平台。</p>
+        <p>本项目聚焦于<strong>自如APP首页的全链路升级改造</strong>，以业务导向型UI设计和独店产品体验优化为核心目标。从问题拆解到设计落地，共经历四个关键阶段：</p>
+      </div>
+
+      <!-- 问题链路拆解 + 设计策略 — 使用PDF页面 -->
+      <div class="cs-img-full reveal">
+        <img src="assets/yihuan/page_4.png" alt="问题链路拆解 — 首页/列表页/详情页/IM管家">
+      </div>
+
+      <div class="cs-text reveal" style="margin-top:2rem;">
+        <ul>
+          <li><strong>阶段一：竞品分析与用户调研</strong>——对贝壳、58同城、链家等主流租房平台进行深度对比，结合定性访谈与可用性测试数据，明确优化方向</li>
+          <li><strong>阶段二：信息架构重构</strong>——将分散的业务入口整合至金刚区卡片化布局，通过视觉层级引导用户注意力</li>
+          <li><strong>阶段三：设计方案迭代</strong>——输出首页信息层重构、房源列表标签化匹配、房源卡片差异化展示、详情页决策信息权重提升、IM管家交互体验优化五大方案</li>
+          <li><strong>阶段四：数据验证</strong>——改版后房源推荐转化效率从42.5%提升至51.1%，房源匹配度提升至56.1%，NPS提升+2.1</li>
+        </ul>
+      </div>
+
+      <!-- 设计方案展示 -->
+      <div class="cs-img-full reveal">
+        <img src="assets/yihuan/page_6.png" alt="设计方案 — 金刚区卡片化布局与流量分层">
+      </div>
+
+      <div class="cs-img-full reveal">
+        <img src="assets/yihuan/page_7.png" alt="设计方案 — 列表页标签匹配与房源卡片差异化">
       </div>
     </div>
   </section>
 
-  <!-- 全链路概览大图 -->
-  <section class="sec" id="overview">
+  <!-- 项目荣誉 -->
+  <section class="sec" id="honors">
     <div class="container">
       <div class="sec-head reveal">
-        <h2 class="sec-title">全链路概览</h2>
+        <h2 class="sec-title">项目荣誉</h2>
       </div>
-      <div class="cs-img-full reveal">
-        <img src="assets/ziruim/overview.jpg" alt="自如APP 全链路升级项目概览">
+      <div class="honor-section reveal">
+        <!-- 证书缩略图区 -->
+        <div class="honor-certs">
+          <div class="cert-thumb">
+            <img src="assets/yihuan/page_13.png" alt="荣誉证书">
+          </div>
+          <div class="cert-thumb">
+            <img src="assets/yihuan/page_9.png" alt="国家奖学金证书">
+          </div>
+        </div>
+        <!-- 荣誉列表 -->
+        <div class="honor-list">
+          <div class="honor-list-item">
+            <span class="honor-bullet">●</span>
+            <span><strong>2024 第十五届蓝桥杯交互设计大赛湖南省赛区 一等奖</strong></span>
+          </div>
+          <div class="honor-list-item">
+            <span class="honor-bullet">●</span>
+            <span><strong>2024 第十五届蓝桥杯交互设计大赛全国总决赛 二等奖</strong></span>
+          </div>
+          <div class="honor-list-item">
+            <span class="honor-bullet">●</span>
+            <span><strong>第十九届中国之星设计奖 铜奖</strong></span>
+          </div>
+          <div class="honor-list-item">
+            <span class="honor-bullet">●</span>
+            <span><strong>2024 – 2025 年度国家奖学金</strong></span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Back to Works -->
+  <!-- 更多设计细节展示 -->
+  <section class="sec" id="details">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">更多设计细节</h2>
+      </div>
+      <div class="img-pair reveal">
+        <div class="cs-img-full">
+          <img src="assets/yihuan/page_8.png" alt="信任要素页面权重提升 — 合同条款优化与优惠权益分差异化展示">
+        </div>
+        <div class="cs-img-full">
+          <img src="assets/yihuan/page_9.png" alt="房源推荐模块 — 辅助决策价值提案">
+        </div>
+      </div>
+      <div class="cs-img-full reveal">
+        <img src="assets/yihuan/page_10.png" alt="最终效果 — 自如APP改版后完整页面展示">
+      </div>
+
+      <!-- 底部信息条 — 参考截图2 -->
+      <div class="project-meta-bar reveal">
+        <span class="meta-badge">PERSONAL PROJECT</span>
+        <span>TIME: 2024.07 – 2024.09</span>
+        <span style="margin-left:auto; opacity:.5;">LEI · GUYINGE</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Back to Case Study -->
   <section class="sec">
     <div class="container reveal">
       <a href="ziruim.html" class="back-link">
