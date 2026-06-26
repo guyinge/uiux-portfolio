@@ -79,13 +79,13 @@ npx serve
 
 ## 📝 作品模块
 
-| 项目 | 类型 | 荣誉 |
-|---|---|---|
-| AIGC 辅助设计 | AI Workflow / Creative Tech | 蓝桥杯国家级二等奖 · 国家奖学金 |
-| [自如链路改版](https://guyinge.github.io/uiux-portfolio/ziruim-app.html) | UX Redesign / Product | 中国之星设计大奖铜奖 |
-| HMI 设计提案 | Interface / Automotive | 中国包装创意设计大赛优秀奖 |
-| 宠百汇 APP | E-commerce / Mobile | 湖南之星金奖 · 大广赛省级一等奖 |
-| 后台系统 & C4D | Dashboard / 3D Visual | 湖南省优秀毕业生 |
+| 项目 | 类型 |
+|---|---|
+| AIGC 辅助设计 | AI Workflow / Creative Tech |
+| [自如链路改版](https://guyinge.github.io/uiux-portfolio/ziruim-app.html) | UX Redesign / Product |
+| HMI 设计提案 | Interface / Automotive |
+| 宠百汇 APP | E-commerce / Mobile |
+| 后台系统 & C4D | Dashboard / 3D Visual |
 
 ## 📄 License
 
