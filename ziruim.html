@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自如链路改版 — LEI Portfolio</title>
+  <style>
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg-primary: #08080a;
+      --bg-card: #111115;
+      --text-primary: #f0f0f5;
+      --text-secondary: #8b8b9e;
+      --accent-purple: #a855f7;
+      --accent-pink: #ec4899;
+      --accent-orange: #fb923c;
+      --accent-green: #4ade80;
+      --gradient-main: linear-gradient(135deg, #a855f7, #ec4899, #f97316);
+      --border-subtle: rgba(255,255,255,.06);
+      --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    }
+    html{ scroll-behavior:smooth; font-size:16px; }
+    body{
+      background-color: var(--bg-primary);
+      color: var(--text-primary); font-family: var(--font-display);
+      line-height:1.65; overflow-x:hidden;
+    }
+    a{ color:inherit; text-decoration:none; transition:color .25s; }
+    a:hover{ color:var(--accent-purple); }
+
+    /* ===== Navbar (Case Study) ===== */
+    .cs-nav{
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 clamp(1.25rem,4vw,3rem);
+      height:64px;
+      backdrop-filter:blur(20px); background:rgba(8,8,10,.82);
+      border-bottom:1px solid var(--border-subtle);
+    }
+    .cs-back{
+      display:flex; align-items:center; gap:.5rem;
+      font-size:.75rem; color:var(--text-secondary);
+      letter-spacing:.08em; text-transform:uppercase; cursor:pointer;
+      transition:color .25s;
+    }
+    .cs-back:hover{ color:var(--text-primary); }
+    .cs-back svg{ width:16px; height:16px; stroke:currentColor; stroke-width:2; fill:none;}
+    .cs-logo{
+      font-size:1.2rem; font-weight:800; letter-spacing:.12em;
+      background:var(--gradient-main); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    /* ===== Container ===== */
+    .container{ max-width:1100px; margin:0 auto; padding:0 clamp(1.25rem,4vw,2.5rem); }
+
+    /* ===== Hero ===== */
+    .cs-hero{
+      min-height:70vh; display:flex; flex-direction:column;
+      justify-content:center; padding-top:100px; padding-bottom:4rem;
+      position:relative; overflow:hidden;
+    }
+    .cs-hero::before{
+      content:''; position:absolute; bottom:-10%; right:-6%;
+      width:420px;height:420px;border-radius:50%;
+      background:radial-gradient(circle at center, rgba(168,85,247,.35), transparent 70%);
+      filter:blur(60px); opacity:.5; pointer-events:none;
+    }
+    .cs-hero h1{
+      font-size:clamp(2.6rem,7vw,5rem); font-weight:900;
+      line-height:1.05; letter-spacing:-.02em; text-transform:uppercase;
+    }
+    .cs-subtitle{
+      font-family:var(--font-mono); font-size:.78rem; color:var(--text-secondary);
+      letter-spacing:.15em; text-transform:uppercase; margin-top:.6rem;
+      opacity:.7;
+    }
+
+    /* Meta row: TIME | ROLE | HONORS */
+    .cs-meta{
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:2rem; margin-top:3rem; padding-top:2rem;
+      border-top:1px solid var(--border-subtle);
+      max-width:700px;
+    }
+    .cs-meta-item dt{
+      font-family:var(--font-mono); font-size:.68rem; color:var(--accent-green);
+      text-transform:uppercase; letter-spacing:.12em; margin-bottom:.35rem;
+    }
+    .cs-meta-item dd{ font-size:.88rem; color:var(--text-primary); line-height:1.5; }
+    .honor-row{
+      display:flex; align-items:center; gap:.45rem;
+      font-family:var(--font-mono); font-size:.72rem; color:#fbbf24;
+    }
+    .honor-star{ width:7px;height:7px; background:#fbbf24;
+      clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+      flex-shrink:0;
+    }
+
+    /* ===== Section ===== */
+    .sec{ padding:clamp(3.5rem,8vw,6.5rem) 0; }
+    .sec-head{ margin-bottom:2.5rem; display:flex; align-items:baseline; gap:1rem; }
+    .sec-title{
+      font-size:clamp(1.5rem,3.5vw,2.4rem); font-weight:800;
+      letter-spacing:-.01em; position:relative;
+    }
+    .sec-title::before{
+      content:''; position:absolute; left:-18px; top:.22em;
+      width:4px; height:1em; background:var(--accent-purple); border-radius:2px;
+    }
+
+    /* Text block */
+    .cs-text{ font-size:.9rem; color:var(--text-secondary); line-height:1.85; max-width:800px; }
+    .cs-text p{ margin-bottom:1.2em; }
+    .cs-text strong{ color:var(--text-primary); font-weight:600; }
+
+    /* Two-column layout (text left, image right) */
+    .split-lr{
+      display:grid; grid-template-columns:1fr 1fr; gap:3.5rem; align-items:start;
+    }
+    .split-rl{ grid-template-columns:1fr 1fr; }
+    .split-rl > *:first-child{ order:2; }
+
+    /* Full-width image */
+    .cs-img-full{
+      width:100%; border-radius:14px; overflow:hidden;
+      border:1px solid var(--border-subtle);
+      background:var(--bg-card);
+    }
+    .cs-img-full img{ width:100%; height:auto; display:block; object-fit:cover; }
+
+    /* Image card (with caption) */
+    .img-card{
+      border-radius:14px; overflow:hidden;
+      border:1px solid var(--border-subtle); background:var(--bg-card);
+    }
+    .img-card img{ width:100%; height:auto; display:block; object-fit:cover; }
+
+    /* Data highlight card */
+    .data-grid{
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:1.2rem; margin-top:1.5rem;
+    }
+    .data-card{
+      padding:1.6rem; border-radius:12px; border:1px solid var(--border-subtle);
+      background:var(--bg-card);
+    }
+    .data-num{
+      font-size:2rem; font-weight:900; color:var(--accent-orange);
+      line-height:1.1; margin-bottom:.2rem;
+    }
+    .data-label{ font-size:.76rem; color:var(--text-secondary); }
+
+    /* Quote / highlight box */
+    .highlight-box{
+      border-left:3px solid var(--accent-purple);
+      padding:1.2rem 1.6rem; border-radius:0 12px 12px 0;
+      background:rgba(168,85,247,.04);
+      font-size:.9rem; line-height:1.75; color:var(--text-secondary);
+      margin:1.5rem 0;
+    }
+
+    /* Gallery grid */
+    .gallery-grid{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:1rem;
+    }
+    .gallery-grid img{ width:100%; border-radius:10px; object-fit:cover; aspect-ratio:4/3;}
+
+    /* Back to works link */
+    .back-link{
+      display:inline-flex; align-items:center; gap:.5rem;
+      margin-top:4rem; font-size:.8rem; color:var(--text-secondary);
+      letter-spacing:.05em; text-transform:uppercase;
+      transition:color .25s; cursor:pointer;
+    }
+    .back-link:hover{ color:var(--accent-purple); }
+    .back-link svg{ width:16px; height:16px; stroke:currentColor; stroke-width:2; fill:none; }
+
+    /* Footer spacer */
+    .footer-spacer{ height:120px; }
+
+    /* Scroll reveal */
+    .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal.visible{ opacity:1; transform:translateY(0); }
+
+    /* Responsive */
+    @media(max-width:850px){
+      .split-lr,.split-rl{ grid-template-columns:1fr; gap:2rem; }
+      .split-rl > *:first-child{ order:0; }
+      .gallery-grid{ grid-template-columns:repeat(2,1fr); }
+      .cs-meta{ grid-template-columns:1fr 1fr; gap:1.5rem; }
+    }
+    @media(max-width:550px){
+      .gallery-grid{ grid-template-columns:1fr; }
+      .cs-meta{ grid-template-columns:1fr; }
+      .data-grid{ grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="cs-nav">
+    <a href="index.html" class="cs-back">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      BACK TO HOME
+    </a>
+    <div class="cs-logo">LEI.</div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="cs-hero">
+    <div class="container">
+      <h1>自如链路改版</h1>
+      <div class="cs-subtitle">Ziruim APP Full-link Upgrade Project</div>
+
+      <dl class="cs-meta reveal">
+        <div class="cs-meta-item">
+          <dt>Time</dt>
+          <dd>2024.07 – 2024.09</dd>
+        </div>
+        <div class="cs-meta-item">
+          <dt>Role</dt>
+          <dd>UI/UX Design<br><span style="color:var(--text-secondary)">Interaction</span></dd>
+        </div>
+        <div class="cs-meta-item">
+          <dt>Honors</dt>
+          <dd>
+            <span class="honor-row"><span class="honor-star"></span>第十九届中国之星 铜奖</span>
+            <span class="honor-row"><span class="honor-star"></span>2024–2025 国家奖学金</span>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 设计背景 -->
+  <section class="sec" id="background">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">设计背景</h2>
+      </div>
+      <div class="split-lr reveal">
+        <div class="cs-text">
+          <p>自如作为国内长租公寓头部平台，其首页承担着<strong>房源展示 → 列表页 → 详情页</strong>的核心转化链路。但在实际业务运行中，我们发现以下核心问题：</p>
+          <p><strong>① 首页租房入口分散</strong> — 金刚区入口被折叠，用户难以快速定位租房核心业务。</p>
+          <p><strong>② 房源吸引力不足</strong> — 卡片信息层级扁平，无法突出差异化卖点（合租/整租/品牌）。</p>
+          <p><strong>③ 用户敏感信息聚焦不足</strong> — 租金、押金等关键决策信息未做前置透传，增加决策成本。</p>
+          <p><strong>④ IM 管家沟通体验差</strong> — 管家卡片缺乏专业感与信任感建立。</p>
+        </div>
+        <div class="img-card"><img src="assets/ziruim/bg-context.jpg" alt="设计背景"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 业务目标 -->
+  <section class="sec" id="goals">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">业务目标</h2>
+      </div>
+      <div class="highlight-box reveal">
+        提升用户从首页到房源列表页、详情页的数据漏斗转化效率，促进签约价值转化
+      </div>
+      <div class="data-grid reveal">
+        <div class="data-card">
+          <div class="data-num">42.5%</div>
+          <div class="data-label">推荐房源转化率（改版前）</div>
+        </div>
+        <div class="data-card">
+          <div class="data-num">51.1%</div>
+          <div class="data-label">推荐房源转化率（目标）</div>
+        </div>
+        <div class="data-card">
+          <div class="data-num">+20%</div>
+          <div class="data-label">整体转化提升预期</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 用户调研 -->
+  <section class="sec" id="research">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">用户调研</h2>
+      </div>
+      <div class="split-rl reveal">
+        <div class="img-card"><img src="assets/ziruim/research.jpg" alt="用户调研"></div>
+        <div>
+          <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:.8rem;">定性调研 — 用户访谈</h3>
+          <div class="cs-text">
+            <p>招募 <strong>8 位 22–35 岁</strong>上海租客用户，聚焦首页功能查找、房源信息获取、与管家沟通的体验，明确用户的使用场景和行为习惯。</p>
+          </div>
+          <h3 style="font-size:1.15rem;font-weight:700;margin:1.2rem 0 .8rem;">可用性测试</h3>
+          <div class="cs-text">
+            <p>选取 <strong>15 位用户</strong>完成改版前后的链路流程操作，记录各环节耗时与操作错误率，从中找出设计机会点。以此作为方案模拟后的数据对比参照。</p>
+          </div>
+          <div class="data-grid">
+            <div class="data-card">
+              <div class="data-num">72%</div>
+              <div class="data-label">首页租房业务入口分散</div>
+            </div>
+            <div class="data-card">
+              <div class="data-num">86%</div>
+              <div class="data-label">合同等辅助决策信息不受重视</div>
+            </div>
+            <div class="data-card">
+              <div class="data-num">59%</div>
+              <div class="data-label">首屏过早干预用户决策</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 设计方案 01：金刚区重构 -->
+  <section class="sec" id="solution-1">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">方案一 · 金刚区聚合重构</h2>
+      </div>
+      <div class="split-lr reveal">
+        <div class="cs-text">
+          <p>在调研中发现用户反映首页浏览房源类型时需要跨模块筛选选房源，误触到增值业务的情况频发。为合理分配流量将主次业务进行结构化设计：</p>
+          <p><strong>整合金刚区</strong> — 多个金刚区整合成一个点状展示，模块化营销侧使业务之间有关联性。</p>
+          <p>优化路径：<br>
+            用户首页找房成本高 → 结构化设计 → 整合金刚区入口 → 卡片化营销侧 → 降低次要业务视觉噪音 → 提升租赁业务曝光率</p>
+        </div>
+        <div class="img-card"><img src="assets/ziruim/solution-01.jpg" alt="金刚区聚合"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 方案 02：列表页标签化 -->
+  <section class="sec" id="solution-2">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">方案二 · 搜索列表标签匹配</h2>
+      </div>
+      <div class="split-rl reveal">
+        <div class="img-card"><img src="assets/ziruim/solution-02.jpg" alt="列表页标签化"></div>
+        <div>
+          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:.8rem;">01. 用户细分·整合标签</h3>
+          <div class="cs-text">
+            <p>通过调研问卷，调查了不同身份类型用户敏感的信息标签。发现价格档类标签与合租类用户较敏感，房屋舒适度等类型标签对整租类用户较敏感。</p>
+          </div>
+          <h3 style="font-size:1.1rem;font-weight:700;margin:1.2rem 0 .8rem;">03. 房源卡片差异化设计</h3>
+          <div class="cs-text">
+            <p>通过强调合租房源卡片的价格信息，整租房源卡片则强调房屋品质感的举措来达到促进转化率的效果。</p>
+          </div>
+          <div class="data-grid">
+            <div class="data-card">
+              <div class="data-num">56.1%</div>
+              <div class="data-label">房源匹配度 ↑</div>
+            </div>
+            <div class="data-card">
+              <div class="data-num">28.1%</div>
+              <div class="data-label">转化效率 ↑</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 方案 03：信任要素升级 -->
+  <section class="sec" id="solution-3">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">方案三 · 信任度视觉层焕新</h2>
+      </div>
+      <div class="cs-img-full reveal" style="margin-bottom:2.5rem;">
+        <img src="assets/ziruim/solution-03.jpg" alt="信任要素升级">
+      </div>
+      <div class="split-lr reveal">
+        <div class="cs-text">
+          <p>围绕「<strong>IM 管家沟通体验差</strong>」的痛点，通过视觉层级优化强化管家专业感，提升用户咨询意愿与信任度：</p>
+          <p><strong>01 条款透明化</strong> — 合同部分通过专属色块区分和安全标志建立心智，让信任信息更容易被捕捉；增强快签安全感</p>
+          <p><strong>02 优惠权益分差异化展示</strong> — 放大共享优惠权益和限时信息，推动付转化；聚合并专享优惠权益，看区分享群体，吸引对折扣用户点击</p>
+        </div>
+        <div class="data-grid">
+          <div class="data-card">
+            <div class="data-num">+2.1</div>
+            <div class="data-label">改版后 NPS 提升</div>
+          </div>
+          <div class="data-card">
+            <div class="data-num">12.1%</div>
+            <div class="data-label">用户咨询发起率</div>
+          </div>
+          <div class="data-card">
+            <div class="data-num">8.5%</div>
+            <div class="data-label">(改版前)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 方案 04：租金试算体验 -->
+  <section class="sec" id="solution-4">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">方案四 · 租金试算体验升级</h2>
+      </div>
+      <div class="split-lr reveal">
+        <div class="img-card"><img src="assets/ziruim/solution-04.jpg" alt="租金试算"></div>
+        <div>
+          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:.8rem;">01 清晰·高效传递租金计划信息</h3>
+          <div class="cs-text">
+            <p>租金的付费变化其实比较少。除了第一个月需要缴纳押金之外之后都没有太大变化。首先支持透明展示付款结构，第一月和剩余每月的缴纳金额到这样就在就只凸显了两次缴纳金额，不会让用户感到压迫感。</p>
+          </div>
+          <h3 style="font-size:1.1rem;font-weight:700;margin:1.2rem 0 .8rem;">02 关联优惠信息·驱动转化</h3>
+          <div class="cs-text">
+            <p>租金展当前可享受用优惠的金额，促进付费转化。用户主动查看租金试算的比例实现「<strong>签约转化</strong>」的业务目标。</p>
+          </div>
+          <div class="data-grid">
+            <div class="data-card">
+              <div class="data-num">34.1%</div>
+              <div class="data-label">查看试算比例 ↑</div>
+            </div>
+            <div class="data-card">
+              <div class="data-num">17.4%</div>
+              <div class="data-label">试算页面点击转化</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 方案 05：管家卡片 & 房源推荐 -->
+  <section class="sec" id="solution-5">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">方案五 · 管家卡片 &amp; 房源推荐模块</h2>
+      </div>
+      <div class="cs-img-full reveal" style="margin-bottom:2.5rem;">
+        <img src="assets/ziruim/solution-05.jpg" alt="管家卡片与房源推荐">
+      </div>
+      <div class="cs-text reveal">
+        <p><strong>为用户提供比对和选择的可能性。</strong>用户在进行性价比比对时，需要来回反复跳转到不同详情页进行比对，增加了用户的认知负荷。为此需要提供直观的房源比对，以房源周边为基础进行房源推荐。</p>
+        <p><strong>提高高效的交互原则：</strong>多房源比对时左右滑动的方式横向比对有效的提高了屏幕效果，上下滑动的模式会增加用户翻阅负担。</p>
+      </div>
+      <div class="data-grid reveal" style="margin-top:2rem;">
+        <div class="data-card">
+          <div class="data-num">45.6%</div>
+          <div class="data-label">改版后页面跳出率 ↓</div>
+        </div>
+        <div class="data-card">
+          <div class="data-num">53.7%</div>
+          <div class="data-label">改版前页面跳出率</div>
+        </div>
+        <div class="data-card">
+          <div class="data-num" style="font-size:1.4rem;">NO ✗ / YES ✓</div>
+          <div class="data-label">交互原则验证</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Before / After -->
+  <section class="sec" id="beforeafter">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">Before · After 对比</h2>
+      </div>
+      <div class="cs-img-full reveal">
+        <img src="assets/ziruim/beforeafter.jpg" alt="Before After 对比">
+      </div>
+    </div>
+  </section>
+
+  <!-- 页面展示 -->
+  <section class="sec" id="overview">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">页面展示</h2>
+      </div>
+      <div class="cs-img-full reveal">
+        <img src="assets/ziruim/gallery.jpg" alt="Page Overview">
+      </div>
+    </div>
+  </section>
+
+  <!-- Back to Works -->
+  <section class="sec">
+    <div class="container reveal">
+      <a href="index.html#works" class="back-link">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        BACK TO WORKS
+      </a>
+    </div>
+  </section>
+
+  <!-- Spacer -->
+  <div class="footer-spacer"></div>
+
+  <!-- JS -->
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    },{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+    reveals.forEach(el=>observer.observe(el));
+  </script>
+</body>
+</html>
