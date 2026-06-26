@@ -87,9 +87,9 @@
       opacity:.55; font-weight:400;
     }
 
-    /* Meta 行 — 参考截图1三列布局 TIME / ROLE / HONORS */
+    /* Meta 行 — 参考截图1两列布局 TIME / ROLE */
     .cs-meta{
-      display:grid; grid-template-columns:repeat(3, 1fr);
+      display:grid; grid-template-columns:repeat(2, 1fr);
       gap:2rem; margin-top:2.8rem; padding-top:2rem;
       border-top:1px solid var(--border-subtle);
       max-width:780px;
@@ -99,20 +99,6 @@
       text-transform:uppercase; letter-spacing:.15em; margin-bottom:.35rem; font-weight:600;
     }
     .cs-meta-item dd{ font-size:.86rem; color:var(--text-primary); line-height:1.55; }
-
-    /* 荣誉星标行 */
-    .honor-row{
-      display:flex; flex-direction:column; gap:.28rem;
-    }
-    .honor-item{
-      display:flex; align-items:center; gap:.45rem;
-      font-family:var(--font-mono); font-size:.70rem; color:#fbbf24;
-      line-height:1.45;
-    }
-    .honor-star{
-      width:7px;height:7px; background:#fbbf24; flex-shrink:0;
-      clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
-    }
 
     /* ===== Section 通用 ===== */
     .sec{ padding:clamp(3.2rem,7vw,5.5rem) 0; }
@@ -170,36 +156,6 @@
       border:1px solid rgba(255,255,255,.06);
     }
 
-    /* ===== 项目荣誉区（参考截图2底部样式） ===== */
-    .honor-section{
-      display:flex; align-items:flex-start; gap:3rem;
-      margin-top:1.5rem; flex-wrap:wrap;
-    }
-    .honor-certs{
-      flex:0 0 auto;
-      display:flex; gap:1rem;
-    }
-    .honor-certs .cert-thumb{
-      width:160px; height:220px; border-radius:10px; overflow:hidden;
-      border:1px solid rgba(251,191,36,.2); background:var(--bg-card);
-    }
-    .honor-certs .cert-thumb img{
-      width:100%; height:100%; object-fit:cover;
-    }
-    .honor-list{
-      flex:1; min-width:260px;
-    }
-    .honor-list-item{
-      display:flex; align-items:flex-start; gap:.6rem;
-      padding:.65rem 0; border-bottom:1px solid rgba(255,255,255,.04);
-      font-size:.84rem; line-height:1.5;
-    }
-    .honor-list-item:last-child{ border-bottom:none; }
-    .honor-bullet{
-      color:var(--accent-orange); font-weight:700; font-size:1rem;
-      flex-shrink:0; line-height:1.4;
-    }
-
     /* 底部信息条 — 参考截图2 */
     .project-meta-bar{
       display:flex; align-items:center; gap:2rem;
@@ -234,13 +190,10 @@
     /* Responsive */
     @media(max-width:860px){
       .cs-meta{ grid-template-columns:1fr 1fr; gap:1.5rem; }
-      .honor-section{ flex-direction:column; gap:2rem; }
       .img-pair{ grid-template-columns:1fr; }
     }
     @media(max-width:550px){
       .cs-meta{ grid-template-columns:1fr; }
-      .honor-certs{ flex-wrap:wrap; }
-      .honor-certs .cert-thumb{ width:140px; height:190px; }
     }
   </style>
 </head>
@@ -270,13 +223,6 @@
         <div class="cs-meta-item">
           <dt>ROLE</dt>
           <dd>UI/UX Design<br><span style="color:var(--text-secondary)">Interaction Design</span></dd>
-        </div>
-        <div class="cs-meta-item">
-          <dt>HONORS</dt>
-          <dd class="honor-row">
-            <span class="honor-item"><span class="honor-star"></span>第十九届中国之星设计大奖 铜奖</span>
-            <span class="honor-item"><span class="honor-star"></span>2024–2025 年度国家奖学金</span>
-          </dd>
         </div>
       </dl>
 
@@ -341,45 +287,6 @@
 
       <div class="cs-img-full reveal">
         <img src="assets/yihuan/page_7.jpg" alt="设计方案 — 列表页标签匹配与房源卡片差异化">
-      </div>
-    </div>
-  </section>
-
-  <!-- 项目荣誉 -->
-  <section class="sec" id="honors">
-    <div class="container">
-      <div class="sec-head reveal">
-        <h2 class="sec-title">项目荣誉</h2>
-      </div>
-      <div class="honor-section reveal">
-        <!-- 证书缩略图区 -->
-        <div class="honor-certs">
-          <div class="cert-thumb">
-            <img src="assets/yihuan/page_13.jpg" alt="荣誉证书">
-          </div>
-          <div class="cert-thumb">
-            <img src="assets/yihuan/page_9.jpg" alt="国家奖学金证书">
-          </div>
-        </div>
-        <!-- 荣誉列表 -->
-        <div class="honor-list">
-          <div class="honor-list-item">
-            <span class="honor-bullet">●</span>
-            <span><strong>2024 第十五届蓝桥杯交互设计大赛湖南省赛区 一等奖</strong></span>
-          </div>
-          <div class="honor-list-item">
-            <span class="honor-bullet">●</span>
-            <span><strong>2024 第十五届蓝桥杯交互设计大赛全国总决赛 二等奖</strong></span>
-          </div>
-          <div class="honor-list-item">
-            <span class="honor-bullet">●</span>
-            <span><strong>第十九届中国之星设计奖 铜奖</strong></span>
-          </div>
-          <div class="honor-list-item">
-            <span class="honor-bullet">●</span>
-            <span><strong>2024 – 2025 年度国家奖学金</strong></span>
-          </div>
-        </div>
       </div>
     </div>
   </section>
