@@ -304,9 +304,14 @@
       position:relative;
       background:linear-gradient(145deg,#16161e,#211a28);
       display:flex; align-items:center; justify-content:center;
-      font-size:2.6rem; color:rgba(168,85,247,.22); font-weight:900;
       border:1px solid rgba(255,255,255,.05);
     }
+    .work-thumb img {
+      width:100%; height:100%;
+      object-fit: cover; /* 自动适配，保持比例填满 */
+      display:block; transition: transform .5s ease;
+    }
+    .work-card:hover .work-thumb img { transform: scale(1.03); }
 
     /* ===== Experience ===== */
     .exp-list { display:flex; flex-direction:column; gap:0; }
@@ -471,7 +476,7 @@
               <span class="honor-badge"><span class="badge-icon"></span>2024–2025 年度国家奖学金</span>
             </div>
           </div>
-          <div class="work-thumb">🤖</div>
+          <div class="work-thumb"><img src="assets/work-aigc.jpg" alt="AIGC 辅助设计"></div>
         </article>
 
         <!-- 2. 自如链路改版 -->
@@ -483,7 +488,7 @@
               <span class="honor-badge"><span class="badge-icon"></span>第十九届中国之星设计大奖 铜奖</span>
             </div>
           </div>
-          <div class="work-thumb">🔗</div>
+          <div class="work-thumb"><img src="assets/work-ziruim.jpg" alt="自如链路改版"></div>
         </article>
 
         <!-- 3. HMI设计提案 -->
@@ -495,7 +500,7 @@
               <span class="honor-badge"><span class="badge-icon"></span>中国包装创意设计大赛 优秀奖</span>
             </div>
           </div>
-          <div class="work-thumb">🚗</div>
+          <div class="work-thumb"><img src="assets/work-hmi.jpg" alt="HMI 设计提案"></div>
         </article>
 
         <!-- 4. 宠百汇APP -->
@@ -508,7 +513,7 @@
               <span class="honor-badge"><span class="badge-icon"></span>第十六届全国大学生广告艺术大赛 省级一等奖</span>
             </div>
           </div>
-          <div class="work-thumb">🐾</div>
+          <div class="work-thumb"><img src="assets/work-chongbaihui.jpg" alt="宠百汇 APP"></div>
         </article>
 
         <!-- 5. 后台系统 & C4D -->
@@ -520,7 +525,7 @@
               <span class="honor-badge"><span class="badge-icon"></span>2024–2025 年度湖南省优秀毕业生</span>
             </div>
           </div>
-          <div class="work-thumb">💻</div>
+          <div class="work-thumb"><img src="assets/work-dashboard.jpg" alt="后台系统 & C4D"></div>
         </article>
 
       </div>
