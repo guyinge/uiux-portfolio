@@ -20,11 +20,22 @@
       --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
     }
+
+    /* ===== 亮色主题覆写 ===== */
+    [data-theme="light"] {
+      --bg-primary: #f6f6f9;
+      --bg-card: #ffffff;
+      --text-primary: #15151c;
+      --text-secondary: #5b5b6d;
+      --border-subtle: rgba(0,0,0,0.08);
+      --navbar-bg: rgba(246,246,249,.85);
+    }
     html{ scroll-behavior:smooth; font-size:16px; }
     body{
       background-color: var(--bg-primary);
       color: var(--text-primary); font-family: var(--font-display);
       line-height:1.65; overflow-x:hidden;
+      transition: background-color .5s ease, color .5s ease;
     }
     a{ color:inherit; text-decoration:none; transition:color .25s; }
     a:hover{ color:var(--accent-blue); }
@@ -34,8 +45,9 @@
       display:flex; align-items:center; justify-content:space-between;
       padding:0 clamp(1.25rem,4vw,3rem);
       height:64px;
-      backdrop-filter:blur(20px); background:rgba(8,8,10,.85);
+      backdrop-filter:blur(20px); background:var(--navbar-bg);
       border-bottom:1px solid var(--border-subtle);
+      transition: background-color .5s ease, border-color .5s ease;
     }
     .cs-back{
       display:flex; align-items:center; gap:.5rem;
@@ -141,9 +153,93 @@
 
     @media(max-width:860px){ .cs-meta{ grid-template-columns:1fr 1fr; gap:1.5rem; } .img-pair{ grid-template-columns:1fr; } }
     @media(max-width:550px){ .cs-meta{ grid-template-columns:1fr; } }
-  </style>
+
+    /* ===== 主题切换按钮 ===== */
+    .theme-toggle {
+      width:34px; height:34px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(255,255,255,.04); border:1px solid var(--border-subtle);
+      cursor:pointer; color:var(--text-secondary);
+      transition: all .3s ease; flex-shrink:0;
+    }
+    .theme-toggle:hover { color:var(--accent-purple); border-color:var(--accent-purple); transform: rotate(20deg); }
+    .theme-toggle svg { width:16px; height:16px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .theme-toggle .icon-sun { display:none; }
+    [data-theme="light"] .theme-toggle .icon-sun { display:block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display:none; }
+
+    /* ===== 顶部阅读进度条 ===== */
+    .scroll-progress {
+      position:fixed; top:0; left:0; height:2px; width:0;
+      background: var(--gradient-main);
+      z-index: 1001;
+      transition: width .1s linear;
+      box-shadow: 0 0 8px rgba(168,85,247,.5);
+    }
+
+    /* ===== Preloader ===== */
+    .preloader {
+      position:fixed; inset:0; z-index:9999;
+      background: var(--bg-primary);
+      display:flex; align-items:center; justify-content:center;
+      transition: opacity .6s ease, visibility .6s ease;
+    }
+    .preloader.hidden { opacity:0; visibility:hidden; pointer-events:none; }
+    .preloader-orb {
+      width:54px; height:54px;
+      border-radius:58% 42% 53% 47% / 45% 55% 45% 55%;
+      background: var(--gradient-main);
+      animation: orbBlob 4s ease-in-out infinite, preloaderPulse 1.4s ease-in-out infinite;
+      box-shadow: 0 0 28px rgba(168,85,247,.6);
+    }
+    @keyframes preloaderPulse {
+      0%,100% { transform: scale(.85); opacity:.7; }
+      50% { transform: scale(1.1); opacity:1; }
+    }
+    @keyframes orbBlob {
+      0%   { border-radius:58% 42% 53% 47% / 45% 55% 45% 55%; }
+      50%  { border-radius:42% 58% 52% 48% / 60% 40% 55% 45%; }
+      100% { border-radius:58% 42% 53% 47% / 45% 55% 45% 55%; }
+    }
+
+    /* ===== 回到顶部按钮 ===== */
+    .back-top {
+      position:fixed; bottom:2rem; right:2rem; z-index:100;
+      width:42px; height:42px; border-radius:50%;
+      background: var(--bg-card);
+      border:1px solid var(--border-subtle);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; color:var(--text-secondary);
+      opacity:0; visibility:hidden; transform:translateY(10px);
+      transition: all .35s ease;
+    }
+    .back-top.visible { opacity:1; visibility:visible; transform:translateY(0); }
+    .back-top:hover { border-color:var(--accent-purple); color:var(--accent-purple); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(168,85,247,.25); }
+    .back-top svg { width:18px; height:18px; stroke:currentColor; stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+
+    </style>
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('theme');
+        if (!saved) {
+          saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch(e) {}
+    })();
+  </script>
 </head>
 <body>
+
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-orb"></div>
+  </div>
+
+  <!-- 阅读进度条 -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
 
   <!-- Nav -->
   <nav class="cs-nav">
@@ -151,7 +247,13 @@
       <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       ← BACK TO HOME
     </a>
-    <div class="cs-logo">LEI.</div>
+    <div style="display:flex; align-items:center; gap:.8rem;">
+      <div class="cs-logo">LEI.</div>
+      <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换主题 (T)">
+        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </div>
   </nav>
 
   <!-- Hero -->
@@ -309,11 +411,64 @@
   <div class="footer-spacer"></div>
 
   <script>
+    // ===== Preloader 隐藏 =====
+    window.addEventListener('load', function() {
+      var preloader = document.getElementById('preloader');
+      if (preloader) setTimeout(function(){ preloader.classList.add('hidden'); }, 300);
+    });
+
+    // ===== 主题切换 =====
+    var themeToggle = document.getElementById('themeToggle');
+    function applyTheme(theme) {
+      if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      else document.documentElement.removeAttribute('data-theme');
+      try { localStorage.setItem('theme', theme); } catch(e) {}
+    }
+    function toggleTheme() {
+      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      applyTheme(isLight ? 'dark' : 'light');
+    }
+    if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+
+    // ===== 阅读进度条 =====
+    var scrollProgress = document.getElementById('scrollProgress');
+    function updateProgress() {
+      var scrollTop = window.scrollY;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      if (scrollProgress) scrollProgress.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // ===== 回到顶部 =====
+    var backTop = document.getElementById('backTop');
+    function updateBackTop() {
+      if (!backTop) return;
+      if (window.scrollY > 500) backTop.classList.add('visible');
+      else backTop.classList.remove('visible');
+    }
+    window.addEventListener('scroll', updateBackTop, { passive: true });
+    if (backTop) backTop.addEventListener('click', function(){ window.scrollTo({ top:0, behavior:'smooth' }); });
+
+    // ===== 键盘快捷键 =====
+    document.addEventListener('keydown', function(e) {
+      var tag = (e.target.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+      if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(); }
+    });
+
+
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
     },{threshold:.08,rootMargin:'0px 0px -30px 0px'});
     reveals.forEach(el=>observer.observe(el));
   </script>
+  <!-- 回到顶部 -->
+  <button class="back-top" id="backTop" aria-label="回到顶部" title="回到顶部">
+    <svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
 </body>
 </html>
