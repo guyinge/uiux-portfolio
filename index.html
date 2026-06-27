@@ -346,6 +346,24 @@
     .exp-body h4 { font-size:1.15rem; font-weight:700; margin-bottom:.2rem; }
     .exp-body .role { font-size:.84rem; color:var(--text-secondary); margin-bottom:.3rem; }
     .exp-body .detail { font-size:.82rem; color:var(--text-secondary); line-height:1.65; }
+    /* 职责要点列表 */
+    .exp-duties { list-style:none; margin:.6rem 0 .8rem; padding:0; }
+    .exp-duties li {
+      font-size:.82rem; color:var(--text-secondary); line-height:1.7;
+      padding-left:1.1rem; position:relative;
+    }
+    .exp-duties li::before {
+      content:''; position:absolute; left:0; top:.62em;
+      width:5px; height:5px; border-radius:50%;
+      background:var(--accent-purple); opacity:.55;
+    }
+    .exp-tags { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.4rem; }
+    .exp-tag {
+      font-size:.68rem; padding:.22rem .65rem; border-radius:6px;
+      background:rgba(168,85,247,.08); color:#c4b5fd;
+      border:1px solid rgba(168,85,247,.18);
+      font-family:var(--font-mono); letter-spacing:.02em;
+    }
     .exp-time {
       font-family:var(--font-mono); font-size:.74rem; color:var(--text-secondary);
       white-space:nowrap; opacity:.6; text-align:right;
@@ -546,12 +564,10 @@
   </style>
   <script>
     // 提前应用主题（避免刷新时的主题闪烁）
+    // 默认暗黑，仅当用户手动切换过 light 时才用亮色
     (function() {
       try {
         var saved = localStorage.getItem('theme');
-        if (!saved) {
-          saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-        }
         if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
       } catch(e) {}
     })();
@@ -689,31 +705,43 @@
         <div class="exp-item reveal">
           <div class="exp-dot"></div>
           <div class="exp-body">
-            <h4>UI/UX 设计师（实习）</h4>
-            <div class="role">某互联网科技公司 · 产品设计部</div>
-            <div class="detail">负责移动端产品的界面设计与用户体验优化，参与设计系统搭建，独立完成 3 个核心模块的重设计迭代。</div>
+            <h4>UI/UX 设计师 · 产品助理</h4>
+            <div class="role">杭州轻职科技有限公司</div>
+            <ul class="exp-duties">
+              <li>主导招聘项目从 0 到 1 的全链路设计，覆盖用户调研、信息架构、交互流程、视觉规范与高保真输出</li>
+              <li>协同产品经理梳理业务需求，输出原型方案并推动评审落地，打通设计与研发的交付链路</li>
+              <li>搭建可复用的设计组件库与标注规范，统一多端视觉语言，提升团队设计协作效率</li>
+              <li>基于用户反馈与数据埋点持续迭代体验细节，优化关键转化路径与求职者使用链路</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">全链路设计</span>
+              <span class="exp-tag">交互原型</span>
+              <span class="exp-tag">设计系统</span>
+              <span class="exp-tag">产品协同</span>
+            </div>
           </div>
-          <div class="exp-time">2024.07 – Now</div>
+          <div class="exp-time">2025.05 – 2026.05</div>
         </div>
 
         <div class="exp-item reveal">
           <div class="exp-dot"></div>
           <div class="exp-body">
-            <h4>视觉设计师</h4>
-            <div class="role">校园工作室 · 创意团队负责人</div>
-            <div class="detail">带领 8 人团队完成校内外商业项目 20+ 项，涵盖品牌设计、包装、视频制作等方向。</div>
+            <h4>UI/UX 设计师</h4>
+            <div class="role">江苏庄科信息技术有限公司</div>
+            <ul class="exp-duties">
+              <li>负责公司官网、Web 产品与活动专题页的整体视觉设计及前端视觉走查，确保多端一致性</li>
+              <li>承接产品原型图，完成交互细节打磨与高保真界面输出，配合研发还原设计效果</li>
+              <li>参与多个营销活动页的创意构思与视觉落地，提升活动页转化率与品牌辨识度</li>
+              <li>沉淀页面设计模板与规范文档，缩短同类项目交付周期，支撑多条业务线并行推进</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">Web 设计</span>
+              <span class="exp-tag">活动专题</span>
+              <span class="exp-tag">视觉还原</span>
+              <span class="exp-tag">官网建设</span>
+            </div>
           </div>
-          <div class="exp-time">2022.09 – 2024.06</div>
-        </div>
-
-        <div class="exp-item reveal">
-          <div class="exp-dot"></div>
-          <div class="exp-body">
-            <h4>国家社科基金青年项目 · 研究助理</h4>
-            <div class="role">高校科研团队 · 视觉传达方向</div>
-            <div class="detail">参与非物质文化遗产数字化保护研究，负责可视化呈现与信息图表设计。</div>
-          </div>
-          <div class="exp-time">2023.06 – 2024.01</div>
+          <div class="exp-time">2022.09 – 2025.04</div>
         </div>
 
       </div>
