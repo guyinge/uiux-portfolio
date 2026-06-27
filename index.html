@@ -143,7 +143,7 @@
         );
       filter: blur(55px);
       opacity: var(--orb-opacity);
-      top:50%; right:-6%;
+      top:50%; right:2%;
       transform:translateY(-50%);
       pointer-events:auto; z-index:0;
       /* 常规：缓慢的不规则形变 + 微旋转 */
@@ -387,26 +387,65 @@
       border:1px solid var(--border-subtle);
     }
 
-    /* ===== Footer ===== */
-    .footer {
-      border-top:1px solid var(--border-subtle); padding:3.5rem 0;
+    /* ===== Footer / Contact（LET'S CONNECT） ===== */
+    .contact-section {
+      padding: clamp(5rem, 12vw, 10rem) 0;
+      position:relative;
+    }
+    .contact-inner {
+      max-width:900px; margin:0 auto;
+      padding:0 clamp(1.25rem,4vw,3rem);
+    }
+    .contact-title {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: var(--text-primary);
+      margin-bottom: .6rem;
+    }
+    .contact-subtitle {
+      font-size:.82rem; color:var(--text-secondary);
+      letter-spacing:.04em; margin-bottom:3.5rem;
+      opacity:.7;
+    }
+    .contact-grid {
+      display:flex; flex-wrap:wrap; gap:2rem 0;
+    }
+    .contact-item {
+      display:flex; align-items:center; gap:1rem;
+      width:calc(50% - 1rem);
+      min-width:260px;
+    }
+    .contact-icon {
+      width:40px; height:40px; border-radius:50%;
+      background: var(--bg-card);
+      border:1px solid var(--border-subtle);
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+      transition:border-color .3s ease, color .3s ease;
+    }
+    .contact-item:hover .contact-icon {
+      border-color:var(--accent-purple); color:var(--accent-purple);
+    }
+    .contact-icon svg { width:17px; height:17px; stroke:currentColor; stroke-width:1.8; fill:none; }
+    .contact-info { display:flex; flex-direction:column; gap:.15rem; }
+    .contact-label {
+      font-size:.65rem; text-transform:uppercase; letter-spacing:.16em;
+      color:var(--text-secondary); opacity:.55; font-family:var(--font-mono);
+    }
+    .contact-value {
+      font-size:.92rem; color:var(--text-primary); font-weight:500;
+      transition:color .25s;
+    }
+    .contact-item:hover .contact-value { color:var(--accent-purple); }
+
+    /* ===== Footer 底栏 ===== */
+    .footer-bar {
+      border-top:1px solid var(--border-subtle); padding:2rem 0;
       text-align:center;
     }
-    .footer-logo {
-      font-size:1.8rem; font-weight:900; letter-spacing:.1em;
-      background:var(--gradient-main); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-      background-clip:text; margin-bottom:1rem;
-    }
-    .footer-text { font-size:.82rem; color:var(--text-secondary); }
-    .social-links { display:flex; justify-content:center; gap:1.2rem; margin-top:1.2rem; }
-    .social-link {
-      width:42px;height:42px;border-radius:50%;
-      display:flex;align-items:center;justify-content:center;
-      border:1px solid var(--border-subtle);
-      color:var(--text-secondary); font-size:.95rem;
-      transition:all .3s ease;
-    }
-    .social-link:hover { border-color:var(--accent-purple); color:var(--accent-purple); transform:translateY(-2px); }
+    .footer-text { font-size:.78rem; color:var(--text-secondary); opacity:.45; }
 
     /* ===== Responsive ===== */
     @media(max-width:900px){
@@ -425,11 +464,12 @@
       html, body, .hero { cursor: auto; }  /* 移动端恢复原生光标 */
       .cursor-dot { display: none; }         /* 移动端隐藏自定义光标 */
       .hero-title{font-size:clamp(2.2rem,10vw,4rem);}
-      .hero-orb{width:280px;height:280px;right:-15%;filter:blur(38px);}
+      .hero-orb{width:280px;height:280px;right:-5%;filter:blur(38px);}
       .sec-title{font-size:clamp(1.5rem,6vw,2.5rem);}
       .work-card{padding:1.5rem;}
       .work-thumb{max-height:200px;}
       .skills-grid{grid-template-columns:1fr;}
+      .contact-item{width:100%;}
     }
 
     /* ===== 主题切换按钮 ===== */
@@ -700,16 +740,6 @@
           </div>
         </div>
         <div class="skill-card reveal">
-          <div class="skill-icon">🎬</div>
-          <h4>影视创作</h4>
-          <p>从脚本撰写、分镜设计到后期剪辑调色，具备完整的视频内容生产能力。</p>
-          <div class="skill-tags">
-            <span class="skill-tag">Premiere Pro</span>
-            <span class="skill-tag">After Effects</span>
-            <span class="skill-tag">DaVinci Resolve</span>
-          </div>
-        </div>
-        <div class="skill-card reveal">
           <div class="skill-icon">🤖</div>
           <h4>AIGC 工具流</h4>
           <p>将 AI 工具融入创意工作流，探索生成式设计与人机协作的新可能。</p>
@@ -735,17 +765,65 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-logo">LEI.</div>
-      <p class="footer-text">Crafted with passion · Designed for impact</p>
-      <div class="social-links">
-        <a href="#" class="social-link" title="GitHub">GH</a>
-        <a href="#" class="social-link" title="Dribbble">Dr</a>
-        <a href="#" class="social-link" title="Email">@</a>
-        <a href="#" class="social-link" title="LinkedIn">in</a>
+  <!-- Contact / LET'S CONNECT -->
+  <section class="contact-section" id="contact">
+    <div class="contact-inner reveal">
+      <h2 class="contact-title">LET'S<br>CONNECT.</h2>
+      <p class="contact-subtitle">期待与优秀的团队和项目相遇，共同创造有温度的设计。</p>
+      <div class="contact-grid">
+
+        <!-- QQ -->
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-info">
+            <span class="contact-label">QQ</span>
+            <span class="contact-value">3865950942</span>
+          </div>
+        </div>
+
+        <!-- Email (163) -->
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 10l-4 4-4-4"/></svg>
+          </div>
+          <div class="contact-info">
+            <span class="contact-label">EMAIL</span>
+            <span class="contact-value"><a href="mailto:g15617971267@163.com">g15617971267@163.com</a></span>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div class="contact-info">
+            <span class="contact-label">PHONE</span>
+            <span class="contact-value"><a href="tel:15617971267">15617971267</a></span>
+          </div>
+        </div>
+
+        <!-- QQ Email -->
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <div class="contact-info">
+            <span class="contact-label">QQ EMAIL</span>
+            <span class="contact-value"><a href="mailto:3865950942@qq.com">3865950942@qq.com</a></span>
+          </div>
+        </div>
+
       </div>
+    </div>
+  </section>
+
+  <!-- Footer 底栏 -->
+  <footer class="footer-bar">
+    <div class="container">
+      <p class="footer-text">Crafted with passion · Designed for impact · LEI GUYINGE</p>
     </div>
   </footer>
 
