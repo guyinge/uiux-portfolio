@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>后台系统 & C4D — LEI Portfolio</title>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg-primary: #08080a;
+      --bg-card: #111115;
+      --text-primary: #f0f0f5;
+      --text-secondary: #8b8b9e;
+      --accent-purple: #a855f7;
+      --accent-pink: #ec4899;
+      --accent-green: #4ade80;
+      --accent-blue: #38bdf8;
+      --gradient-main: linear-gradient(135deg, #a855f7, #ec4899, #f97316);
+      --border-subtle: rgba(255,255,255,.06);
+      --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    }
+    html{ scroll-behavior:smooth; font-size:16px; }
+    body{
+      background-color: var(--bg-primary);
+      color: var(--text-primary); font-family: var(--font-display);
+      line-height:1.65; overflow-x:hidden;
+    }
+    a{ color:inherit; text-decoration:none; transition:color .25s; }
+    a:hover{ color:var(--accent-blue); }
+
+    .cs-nav{
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 clamp(1.25rem,4vw,3rem);
+      height:64px;
+      backdrop-filter:blur(20px); background:rgba(8,8,10,.85);
+      border-bottom:1px solid var(--border-subtle);
+    }
+    .cs-back{
+      display:flex; align-items:center; gap:.5rem;
+      font-size:.70rem; color:var(--text-secondary);
+      letter-spacing:.12em; text-transform:uppercase; cursor:pointer;
+      transition:color .25s; font-weight:500;
+    }
+    .cs-back:hover{ color:var(--text-primary); }
+    .cs-back svg{ width:14px; height:14px; stroke:currentColor; stroke-width:2.2; fill:none;}
+    .cs-logo{
+      font-size:1.2rem; font-weight:800; letter-spacing:.14em;
+      background:var(--gradient-main); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    .container{ max-width:1100px; margin:0 auto; padding:0 clamp(1.25rem,4vw,2.5rem); }
+
+    .cs-hero{
+      min-height:52vh; display:flex; flex-direction:column;
+      justify-content:center; padding-top:96px; padding-bottom:2.5rem;
+      position:relative; overflow:hidden;
+    }
+    .hero-dot{
+      position:absolute; right:clamp(1.5rem,5vw,4rem); top:26%;
+      width:10px; height:10px; border-radius:50%;
+      background:#fff; animation:dotBreath 2.6s ease-in-out infinite;
+      opacity:.32;
+    }
+    @keyframes dotBreath {
+      0%,100%{opacity:.22; transform:scale(.82)}
+      50%{opacity:.92; transform:scale(1)}
+    }
+
+    .cs-hero h1{
+      font-size:clamp(2.4rem,6vw,4.5rem); font-weight:900;
+      line-height:1.08; letter-spacing:-.02em;
+    }
+    .cs-hero h1 span.highlight{ color:#38bdf8; } /* 蓝色 — 对应科技感 */
+    .cs-subtitle{
+      font-family:var(--font-mono); font-size:.70rem; color:var(--text-secondary);
+      letter-spacing:.20em; text-transform:uppercase; margin-top:.5rem;
+      opacity:.55; font-weight:400;
+    }
+
+    .cs-meta{
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:2rem; margin-top:2.6rem; padding-top:1.8rem;
+      border-top:1px solid var(--border-subtle);
+      max-width:700px;
+    }
+    .cs-meta-item dt{
+      font-family:var(--font-mono); font-size:.64rem; color:var(--accent-green);
+      text-transform:uppercase; letter-spacing:.15em; margin-bottom:.35rem; font-weight:600;
+    }
+    .cs-meta-item dd{ font-size:.86rem; color:var(--text-primary); line-height:1.55; }
+
+    .sec{ padding:clamp(2.5rem,6vw,4.5rem) 0; }
+    .sec-head{ margin-bottom:1.8rem; }
+    .sec-title{
+      font-size:clamp(1.3rem,2.6vw,1.85rem); font-weight:800;
+      letter-spacing:-.01em; position:relative;
+      padding-left:18px; display:inline-block;
+    }
+    .sec-title::before{
+      content:''; position:absolute; left:0; top:.18em;
+      width:4px; height:1em; background:var(--accent-blue); border-radius:2px;
+    }
+
+    .cs-text{
+      font-size:.88rem; color:var(--text-secondary); line-height:1.92;
+      max-width:840px;
+    }
+    .cs-text p{ margin-bottom:1.05em; text-align:justify; }
+    .cs-text strong{ color:var(--text-primary); font-weight:600; }
+
+    .cs-img-full{
+      width:100%; border-radius:14px; overflow:hidden;
+      border:1px solid var(--border-subtle); background:var(--bg-card);
+      margin:1.2rem 0;
+    }
+    .cs-img-full img{ width:100%; height:auto; display:block; object-fit:cover; }
+
+    /* 双图 */
+    .img-pair{
+      display:grid; grid-template-columns:1fr 1fr; gap:1.2rem;
+      margin:1.5rem 0;
+    }
+    .img-pair .cs-img-full{ margin:0; }
+
+    .back-link{
+      display:inline-flex; align-items:center; gap:.45rem;
+      margin-top:3.5rem; font-size:.74rem; color:var(--text-secondary);
+      letter-spacing:.08em; text-transform:uppercase;
+      transition:color .25s; cursor:pointer;
+    }
+    .back-link:hover{ color:var(--accent-purple); }
+    .back-link svg{ width:14px; height:14px; stroke:currentColor; stroke-width:2.2; fill:none;}
+
+    .footer-spacer{ height:120px; }
+
+    .reveal{ opacity:0; transform:translateY(30px); transition:opacity .75s ease,transform .75s ease; }
+    .reveal.visible{ opacity:1; transform:translateY(0); }
+
+    @media(max-width:860px){ .cs-meta{ grid-template-columns:1fr 1fr; gap:1.5rem; } .img-pair{ grid-template-columns:1fr; } }
+    @media(max-width:550px){ .cs-meta{ grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="cs-nav">
+    <a href="index.html#works" class="cs-back">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      ← BACK TO HOME
+    </a>
+    <div class="cs-logo">LEI.</div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="cs-hero">
+    <div class="hero-dot"></div>
+    <div class="container">
+      <h1>后台系统 &amp; <span class="highlight">C4D</span></h1>
+      <div class="cs-subtitle">DASHBOARD / 3D VISUAL · DATA SYSTEM</div>
+
+      <dl class="cs-meta reveal">
+        <div class="cs-meta-item">
+          <dt>CLIENT</dt>
+          <dd>长春市信息管理系统<br><span style="color:var(--text-secondary)">Changchun City Gov</span></dd>
+        </div>
+        <div class="cs-meta-item">
+          <dt>ROLE</dt>
+          <dd>Dashboard Design<br><span style="color:var(--text-secondary)">Data Visualization / C4D</span></dd>
+        </div>
+        <div class="cs-meta-item">
+          <dt>TOOLS</dt>
+          <dd>Figma / C4D<br><span style="color:var(--text-secondary)">ECharts / Blender</span></dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 项目介绍 -->
+  <section class="sec" id="intro">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">项目介绍</h2>
+      </div>
+      <div class="cs-text reveal">
+        <p>本项目为<strong>长春市信息管理系统后台</strong>的完整设计交付，涵盖从<strong>设计规范制定、组件库搭建、B 端页面设计、数据可视化大屏到 C4D 三维可视化</strong>的全链路输出。</p>
+        <p>系统面向长春市民 APP 客户端，提供动态、实时、可视化的数据统计与后台风控能力。设计以简洁、干练为主，核心是提高效率，页面不需要过多装饰性视觉元素。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 设计规范 -->
+  <section class="sec" id="spec">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">设计规范</h2>
+      </div>
+      <div class="cs-img-full reveal">
+        <img src="assets/dashboard/page_1.jpg" alt="设计规范 — 颜色体系与字体标准">
+      </div>
+    </div>
+  </section>
+
+  <!-- 组件规范 -->
+  <section class="sec" id="components">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">组件规范</h2>
+      </div>
+      <div class="cs-img-full reveal">
+        <img src="assets/dashboard/page_2.jpg" alt="组件规范 — 输入/分页/选择器/按钮/提示/日历">
+      </div>
+      <div class="img-pair reveal">
+        <div class="cs-img-full">
+          <img src="assets/dashboard/page_3.jpg" alt="组件展示 — 03">
+        </div>
+        <div class="cs-img-full">
+          <img src="assets/dashboard/page_4.jpg" alt="组件展示 — 04">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 后台页面设计 -->
+  <section class="sec" id="dashboard">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">后台页面设计</h2>
+      </div>
+      <div class="cs-text reveal">
+        <p>B 端页面设计以<strong>简洁、干练为主，核心是提高效率</strong>。包含数据总览、用户管理、权限配置、内容审核等核心模块。</p>
+      </div>
+      <div class="img-pair reveal">
+        <div class="cs-img-full">
+          <img src="assets/dashboard/page_5.jpg" alt="后台页面 — 01 数据概览">
+        </div>
+        <div class="cs-img-full">
+          <img src="assets/dashboard/page_6.jpg" alt="后台页面 — 02 用户列表">
+        </div>
+      </div>
+      <div class="img-pair reveal">
+        <div class="cs-img-full">
+          <img src="assets/dashboard/page_7.jpg" alt="后台页面 — 03 内容审核">
+        </div>
+        <div class="cs-img-full">
+          <img src="assets/dashboard/page_8.jpg" alt="后台页面 — 04 权限配置">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 更多页面展示 -->
+  <section class="sec" id="pages">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">更多页面</h2>
+      </div>
+      <div class="cs-img-full reveal">
+        <img src="assets/dashboard/page_9.jpg" alt="B端页面矩阵 — 多页面完整展示">
+      </div>
+    </div>
+  </section>
+
+  <!-- 可视化设计 -->
+  <section class="sec" id="dataviz">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">数据可视化大屏</h2>
+      </div>
+      <div class="cs-text reveal">
+        <p>针对<strong>杭州市犬类办证年审</strong>等数据的统计可视化设计。以图表和图形化的方式展示数据，使用户快速找到内在规律、发现问题。采用深色科技风视觉语言，融合地图、柱状图、折线图、饼图等多种图表类型。</p>
+      </div>
+      <div class="cs-img-full reveal">
+        <img src="assets/dashboard/page_10.jpg" alt="数据可视化大屏 — 杭州犬类办证年审统计">
+      </div>
+    </div>
+  </section>
+
+  <!-- C4D 三维可视化 -->
+  <section class="sec" id="c4d">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">C4D 三维可视化</h2>
+      </div>
+      <div class="cs-text reveal">
+        <p>基于 **Cinema 4D** 打造的<strong>智慧工厂运营管控平台</strong>三维可视化方案。通过 3D 建模 + 实时数据驱动，呈现能耗监控、水质排放、生产区状态等多维度信息，实现<strong>「数字孪生」级</strong>的可视化监控体验。</p>
+      </div>
+      <div class="cs-img-full reveal">
+        <img src="assets/dashboard/page_11.jpg" alt="C4D三维可视化 — 智慧工厂运营管控平台（11）">
+      </div>
+      <div class="cs-img-full reveal">
+        <img src="assets/dashboard/page_12.jpg" alt="C4D三维可视化 — 智慧工厂运营管控平台（12）">
+      </div>
+    </div>
+  </section>
+
+  <!-- Back -->
+  <section class="sec">
+    <div class="container reveal">
+      <a href="index.html#works" class="back-link">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        ← BACK TO HOME
+      </a>
+    </div>
+  </section>
+
+  <div class="footer-spacer"></div>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    },{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+    reveals.forEach(el=>observer.observe(el));
+  </script>
+</body>
+</html>
