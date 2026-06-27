@@ -14,7 +14,7 @@
       --accent-purple: #a855f7;
       --accent-pink: #ec4899;
       --accent-green: #4ade80;
-      --accent-cyan: #67e8f9;
+      --accent-gold: #fbbf24;
       --gradient-main: linear-gradient(135deg, #a855f7, #ec4899, #f97316);
       --border-subtle: rgba(255,255,255,.06);
       --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -27,9 +27,8 @@
       line-height:1.65; overflow-x:hidden;
     }
     a{ color:inherit; text-decoration:none; transition:color .25s; }
-    a:hover{ color:var(--accent-cyan); }
+    a:hover{ color:var(--accent-gold); }
 
-    /* ===== Navbar ===== */
     .cs-nav{
       position:fixed; top:0; left:0; right:0; z-index:1000;
       display:flex; align-items:center; justify-content:space-between;
@@ -52,10 +51,8 @@
       background-clip:text;
     }
 
-    /* ===== Container ===== */
     .container{ max-width:1100px; margin:0 auto; padding:0 clamp(1.25rem,4vw,2.5rem); }
 
-    /* ===== Hero ===== */
     .cs-hero{
       min-height:52vh; display:flex; flex-direction:column;
       justify-content:center; padding-top:96px; padding-bottom:2.5rem;
@@ -76,14 +73,13 @@
       font-size:clamp(2.4rem,6vw,4.5rem); font-weight:900;
       line-height:1.08; letter-spacing:-.02em;
     }
-    .cs-hero h1 span.highlight{ color:#fbbf24; } /* 金色强调 — 对应HMI科技感 */
+    .cs-hero h1 span.highlight{ color:#fbbf24; }
     .cs-subtitle{
       font-family:var(--font-mono); font-size:.70rem; color:var(--text-secondary);
       letter-spacing:.20em; text-transform:uppercase; margin-top:.5rem;
       opacity:.55; font-weight:400;
     }
 
-    /* Meta 行 */
     .cs-meta{
       display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
       gap:2rem; margin-top:2.6rem; padding-top:1.8rem;
@@ -96,7 +92,13 @@
     }
     .cs-meta-item dd{ font-size:.86rem; color:var(--text-primary); line-height:1.55; }
 
-    /* ===== Section ===== */
+    /* 封面大图 — JAC 黑洞金环视觉 */
+    .hero-showcase{ margin-top:2.5rem; }
+    .hero-showcase img{
+      width:100%; border-radius:16px;
+      border:1px solid rgba(255,255,255,.06);
+    }
+
     .sec{ padding:clamp(2.5rem,6vw,4.5rem) 0; }
     .sec-head{ margin-bottom:1.8rem; }
     .sec-title{
@@ -106,7 +108,7 @@
     }
     .sec-title::before{
       content:''; position:absolute; left:0; top:.18em;
-      width:4px; height:1em; background:var(--accent-green); border-radius:2px;
+      width:4px; height:1em; background:var(--accent-gold); border-radius:2px;
     }
 
     .cs-text{
@@ -116,7 +118,6 @@
     .cs-text p{ margin-bottom:1.05em; text-align:justify; }
     .cs-text strong{ color:var(--text-primary); font-weight:600; }
 
-    /* 全宽图片 */
     .cs-img-full{
       width:100%; border-radius:14px; overflow:hidden;
       border:1px solid var(--border-subtle); background:var(--bg-card);
@@ -124,7 +125,13 @@
     }
     .cs-img-full img{ width:100%; height:auto; display:block; object-fit:cover; }
 
-    /* Back link */
+    /* 双图并排 */
+    .img-pair{
+      display:grid; grid-template-columns:1fr 1fr; gap:1.2rem;
+      margin:1.5rem 0;
+    }
+    .img-pair .cs-img-full{ margin:0; }
+
     .back-link{
       display:inline-flex; align-items:center; gap:.45rem;
       margin-top:3.5rem; font-size:.74rem; color:var(--text-secondary);
@@ -136,22 +143,18 @@
 
     .footer-spacer{ height:120px; }
 
-    /* Scroll reveal */
     .reveal{ opacity:0; transform:translateY(30px); transition:opacity .75s ease,transform .75s ease; }
     .reveal.visible{ opacity:1; transform:translateY(0); }
 
-    /* Responsive */
     @media(max-width:860px){
       .cs-meta{ grid-template-columns:1fr 1fr; gap:1.5rem; }
+      .img-pair{ grid-template-columns:1fr; }
     }
-    @media(max-width:550px){
-      .cs-meta{ grid-template-columns:1fr; }
-    }
+    @media(max-width:550px){ .cs-meta{ grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
 
-  <!-- Nav -->
   <nav class="cs-nav">
     <a href="index.html#works" class="cs-back">
       <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -165,145 +168,96 @@
     <div class="hero-dot"></div>
     <div class="container">
       <h1>HMI <span class="highlight">设计提案</span></h1>
-      <div class="cs-subtitle">INTERFACE / AUTOMOTIVE · VISUAL DESIGN</div>
+      <div class="cs-subtitle">INTERFACE / AUTOMOTIVE · JAC MOTORS X6</div>
 
       <dl class="cs-meta reveal">
         <div class="cs-meta-item">
-          <dt>TIME</dt>
-          <dd>2024 – 2025</dd>
+          <dt>CLIENT</dt>
+          <dd>江淮汽车<br><span style="color:var(--text-secondary)">JAC Motors · 思皓 X6</span></dd>
         </div>
         <div class="cs-meta-item">
           <dt>ROLE</dt>
           <dd>HMI / UI Design<br><span style="color:var(--text-secondary)">Visual System / Interaction</span></dd>
         </div>
         <div class="cs-meta-item">
-          <dt>TOOLS</dt>
-          <dd>Figma / Blender<br><span style="color:var(--text-secondary)">AIGC Workflow</span></dd>
+          <dt>SCOPE</dt>
+          <dd>Cockpit Interface<br><span style="color:var(--text-secondary)">Smart Driving Cabin</span></dd>
         </div>
       </dl>
+
+      <!-- 封面：JAC 黑洞金环 -->
+      <div class="hero-showcase reveal">
+        <img src="assets/hmi/page_1.jpg" alt="JAC MOTORS — 黑洞金环封面">
+      </div>
     </div>
   </section>
 
-  <!-- 项目介绍 -->
-  <section class="sec" id="intro">
+  <!-- 项目背景与设计目标 -->
+  <section class="sec" id="background">
     <div class="container">
       <div class="sec-head reveal">
-        <h2 class="sec-title">项目介绍</h2>
+        <h2 class="sec-title">设计目标与策略推导</h2>
       </div>
       <div class="cs-text reveal">
-        <p>本项目为<strong>智能座舱人机交互界面（HMI）设计提案</strong>，聚焦于车载场景下的视觉系统构建与交互体验优化。结合<strong>AIGC 辅助设计工作流</strong>，从概念推导到界面落地实现高效输出。</p>
-        <p>设计涵盖<strong>品牌视觉规范、信息架构梳理、核心页面设计、运营活动视觉、Banner 矩阵及 IP 形象延展</strong>等全链路模块，通过 AI 工具与传统设计方法的融合，探索汽车 HMI 设计的新可能。</p>
+        <p>江淮旗下开发的<strong>思皓 X6 用户反映车载系统存在行驶中操作不便、分心风险高、场景适配性弱</strong>等问题。本提案旨在<strong>提升车载系统体验满意度，强化车型智能化标签，助力产品差异化竞争</strong>。</p>
+        <p>核心策略包含三大方向：<strong>区域化布局策略</strong>（基于驾驶员易触达原则划分交互区域与优先级）、<strong>场景化交互策略</strong>（针对场景划分调整信息补充适配）、<strong>多模态反馈策略</strong>（智能助手辅助驾驶，减少驾驶中的视觉依赖）。</p>
       </div>
-
-      <!-- 封面总览 -->
       <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_1.jpg" alt="项目总览 — 2025 Visual Design Works">
+        <img src="assets/hmi/page_3.jpg" alt="设计目标与策略推导 — 项目背景/目标/策略">
       </div>
     </div>
   </section>
 
-  <!-- 设计策略推导 -->
-  <section class="sec" id="strategy">
+  <!-- 界面设计展示 -->
+  <section class="sec" id="screens">
     <div class="container">
       <div class="sec-head reveal">
-        <h2 class="sec-title">设计策略推导</h2>
+        <h2 class="sec-title">界面设计方案</h2>
       </div>
-      <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_3.jpg" alt="设计策略推导 — 业务诉求/目标/指标验证">
+
+      <!-- 双图展示 -->
+      <div class="img-pair reveal">
+        <div class="cs-img-full">
+          <img src="assets/hmi/page_4.jpg" alt="界面设计 — 01">
+        </div>
+        <div class="cs-img-full">
+          <img src="assets/hmi/page_5.jpg" alt="界面设计 — 02">
+        </div>
+      </div>
+      <div class="img-pair reveal">
+        <div class="cs-img-full">
+          <img src="assets/hmi/page_6.jpg" alt="界面设计 — 03">
+        </div>
+        <div class="cs-img-full">
+          <img src="assets/hmi/page_7.jpg" alt="界面设计 — 04">
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 微博营销话题 & ICONS -->
-  <section class="sec" id="icons">
+  <!-- 多模态反馈 & 智能驾驶舱 -->
+  <section class="sec" id="multimodal">
     <div class="container">
       <div class="sec-head reveal">
-        <h2 class="sec-title">IP 角色与 ICON 延展</h2>
-      </div>
-      <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_4.jpg" alt="微博营销话题 + ICONS + 二级页展示">
-      </div>
-    </div>
-  </section>
-
-  <!-- 过暑亲亲 — 开屏 & 页面方案 -->
-  <section class="sec" id="splash">
-    <div class="container">
-      <div class="sec-head reveal">
-        <h2 class="sec-title">开屏页与活动页方案</h2>
-      </div>
-      <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_5.jpg" alt="开屏页搭建 + 活动页方案一/二">
-      </div>
-    </div>
-  </section>
-
-  <!-- 项目页面汇总 -->
-  <section class="sec" id="pages">
-    <div class="container">
-      <div class="sec-head reveal">
-        <h2 class="sec-title">项目页面汇总</h2>
-      </div>
-      <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_10.jpg" alt="SUMMARY PAGE — 运营页展示合集">
-      </div>
-    </div>
-  </section>
-
-  <!-- Banner 合集 -->
-  <section class="sec" id="banner">
-    <div class="container">
-      <div class="sec-head reveal">
-        <h2 class="sec-title">Banner 视觉矩阵</h2>
+        <h2 class="sec-title">多模态反馈 · 智能驾驶舱</h2>
       </div>
       <div class="cs-text reveal">
-        <p>跨平台、多场景的 Banner 设计集合，涵盖微博、快手、游园集、盒马、学而思等品牌，统一运用<strong>AI 辅助生成 + 人工精细化调整</strong>的工作流，保证视觉品质的同时大幅提升产出效率。</p>
+        <p>通过<strong>语音助理快捷控制**，减少手部操作对驾驶的干扰和视线上的依赖。结合多模态状态反馈系统——待机/Standby、聆听/Listening、确认/Confirming、加载/Loading、播报/Announcing 等——让驾驶舱交互更安全、更直觉。</p>
       </div>
       <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_11.jpg" alt="BANNER — 跨品牌视觉矩阵">
+        <img src="assets/hmi/page_8.jpg" alt="多模态反馈 — 音乐播放器 + 语音助手 + 状态图标">
       </div>
     </div>
   </section>
 
-  <!-- IP 手绘设计与设定创图 -->
-  <section class="sec" id="ip-art">
+  <!-- 最终效果 -->
+  <section class="sec" id="final">
     <div class="container">
       <div class="sec-head reveal">
-        <h2 class="sec-title">IP 手绘设计 & 设定创图</h2>
+        <h2 class="sec-title">最终效果展示</h2>
       </div>
       <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_13.jpg" alt="IP手绘设计 + 设定创图 + 材质拓展 + 数据统计">
-      </div>
-    </div>
-  </section>
-
-  <!-- 完整展示 — 剩余页面 -->
-  <section class="sec" id="gallery">
-    <div class="container">
-      <div class="sec-head reveal">
-        <h2 class="sec-title">更多设计细节</h2>
-      </div>
-
-      <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_2.jpg" alt="设计作品展示 — 01">
-      </div>
-      <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_6.jpg" alt="设计作品展示 — 02">
-      </div>
-      <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_7.jpg" alt="设计作品展示 — 03">
-      </div>
-      <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_8.jpg" alt="设计作品展示 — 04">
-      </div>
-      <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_9.jpg" alt="设计作品展示 — 05">
-      </div>
-      <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_12.jpg" alt="设计作品展示 — 06">
-      </div>
-      <div class="cs-img-full reveal">
-        <img src="assets/hmi/page_14.jpg" alt="设计作品展示 — 07">
+        <img src="assets/hmi/page_9.jpg" alt="最终效果 — 智能驾驶舱完整方案">
       </div>
     </div>
   </section>
@@ -320,7 +274,6 @@
 
   <div class="footer-spacer"></div>
 
-  <!-- JS -->
   <script>
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries)=>{
