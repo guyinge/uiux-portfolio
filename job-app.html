@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>零工有靠 · 求职 APP — LEI Portfolio</title>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg-primary: #08080a;
+      --bg-card: #111115;
+      --text-primary: #f0f0f5;
+      --text-secondary: #8b8b9e;
+      --accent-purple: #a855f7;
+      --accent-pink: #ec4899;
+      --accent-green: #4ade80;       /* 主强调色 — 对应 APP 绿色主题 */
+      --accent-lime: #a3e635;
+      --gradient-main: linear-gradient(135deg, #a855f7, #ec4899, #f97316);
+      --border-subtle: rgba(255,255,255,.06);
+      --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    }
+
+    /* ===== 亮色主题覆写 ===== */
+    [data-theme="light"] {
+      --bg-primary: #f6f6f9;
+      --bg-card: #ffffff;
+      --text-primary: #15151c;
+      --text-secondary: #5b5b6d;
+      --border-subtle: rgba(0,0,0,0.08);
+      --navbar-bg: rgba(246,246,249,.85);
+    }
+
+    html{ scroll-behavior:smooth; font-size:16px; }
+    body{
+      background-color: var(--bg-primary);
+      color: var(--text-primary); font-family: var(--font-display);
+      line-height:1.65; overflow-x:hidden;
+      transition: background-color .5s ease, color .5s ease;
+    }
+    a{ color:inherit; text-decoration:none; transition:color .25s; }
+    a:hover{ color:var(--accent-green); }
+
+    /* ===== Navbar ===== */
+    .cs-nav{
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 clamp(1.25rem,4vw,3rem); height:64px;
+      backdrop-filter:blur(20px); background:var(--navbar-bg);
+      border-bottom:1px solid var(--border-subtle);
+      transition: background-color .5s ease, border-color .5s ease;
+    }
+    .cs-back{
+      display:flex; align-items:center; gap:.5rem;
+      font-size:.70rem; color:var(--text-secondary);
+      letter-spacing:.12em; text-transform:uppercase; cursor:pointer;
+      transition:color .25s; font-weight:500;
+    }
+    .cs-back:hover{ color:var(--text-primary); }
+    .cs-back svg{ width:14px; height:14px; stroke:currentColor; stroke-width:2.2; fill:none;}
+    .cs-logo{
+      font-size:1.2rem; font-weight:800; letter-spacing:.14em;
+      background:var(--gradient-main); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    .container{ max-width:1100px; margin:0 auto; padding:0 clamp(1.25rem,4vw,2.5rem); }
+
+    /* ===== Hero ===== */
+    .cs-hero{
+      min-height:52vh; display:flex; flex-direction:column;
+      justify-content:center; padding-top:96px; padding-bottom:2.5rem;
+      position:relative; overflow:hidden;
+    }
+    .hero-dot{
+      position:absolute; right:clamp(1.5rem,5vw,4rem); top:26%;
+      width:10px; height:10px; border-radius:50%;
+      background:#fff; animation:dotBreath 2.6s ease-in-out infinite; opacity:.32;
+    }
+    @keyframes dotBreath {
+      0%,100%{opacity:.22; transform:scale(.82)}
+      50%{opacity:.92; transform:scale(1)}
+    }
+
+    .cs-hero h1{
+      font-size:clamp(2.4rem,6vw,4.5rem); font-weight:900;
+      line-height:1.08; letter-spacing:-.02em;
+    }
+    .cs-hero h1 span.highlight{ color:#a3e635; } /* 嫩绿 — 匹配 APP 主色 */
+    .cs-subtitle{
+      font-family:var(--font-mono); font-size:.70rem; color:var(--text-secondary);
+      letter-spacing:.20em; text-transform:uppercase; margin-top:.5rem;
+      opacity:.55; font-weight:400;
+    }
+
+    .cs-meta{
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:2rem; margin-top:2.6rem; padding-top:1.8rem;
+      border-top:1px solid var(--border-subtle); max-width:700px;
+    }
+    .cs-meta-item dt{
+      font-family:var(--font-mono); font-size:.64rem; color:var(--accent-green);
+      text-transform:uppercase; letter-spacing:.15em; margin-bottom:.35rem; font-weight:600;
+    }
+    .cs-meta-item dd{ font-size:.86rem; color:var(--text-primary); line-height:1.55; }
+
+    /* ===== Section ===== */
+    .sec{ padding:clamp(2.5rem,6vw,4.5rem) 0; }
+    .sec-head{ margin-bottom:1.8rem; }
+    .sec-title{
+      font-size:clamp(1.3rem,2.6vw,1.85rem); font-weight:800;
+      letter-spacing:-.01em; position:relative;
+      padding-left:18px; display:inline-block;
+    }
+    .sec-title::before{
+      content:''; position:absolute; left:0; top:.18em;
+      width:4px; height:1em; background:var(--accent-green); border-radius:2px;
+    }
+
+    .cs-text{
+      font-size:.88rem; color:var(--text-secondary); line-height:1.92; max-width:840px;
+    }
+    .cs-text p{ margin-bottom:1.05em; text-align:justify; }
+    .cs-text strong{ color:var(--text-primary); font-weight:600; }
+
+    /* 设计要点卡片 */
+    .point-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.2rem; margin-top:1.5rem; }
+    .point-card{
+      padding:1.6rem; border-radius:14px; border:1px solid var(--border-subtle);
+      background:var(--bg-card); transition:all .35s ease;
+    }
+    .point-card:hover{ border-color:rgba(74,222,128,.22); transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,.2); }
+    .point-label{
+      font-family:var(--font-mono); font-size:.66rem; color:var(--accent-green);
+      text-transform:uppercase; letter-spacing:.12em; font-weight:600; margin-bottom:.5rem;
+    }
+    .point-card h4{ font-size:1rem; font-weight:700; margin-bottom:.4rem; }
+    .point-card p{ font-size:.82rem; color:var(--text-secondary); line-height:1.7; }
+
+    .cs-img-full{
+      width:100%; border-radius:14px; overflow:hidden;
+      border:1px solid var(--border-subtle); background:var(--bg-card);
+      margin:1.2rem 0;
+    }
+    .cs-img-full img{ width:100%; height:auto; display:block; object-fit:cover; }
+
+    .back-link{
+      display:inline-flex; align-items:center; gap:.45rem;
+      margin-top:3.5rem; font-size:.74rem; color:var(--text-secondary);
+      letter-spacing:.08em; text-transform:uppercase;
+      transition:color .25s; cursor:pointer;
+    }
+    .back-link:hover{ color:var(--accent-purple); }
+    .back-link svg{ width:14px; height:14px; stroke:currentColor; stroke-width:2.2; fill:none;}
+
+    .footer-spacer{ height:120px; }
+
+    .reveal{ opacity:0; transform:translateY(30px); transition:opacity .75s ease,transform .75s ease; }
+    .reveal.visible{ opacity:1; transform:translateY(0); }
+
+    @media(max-width:860px){ .cs-meta{ grid-template-columns:1fr 1fr; gap:1.5rem; } }
+    @media(max-width:550px){ .cs-meta{ grid-template-columns:1fr; } .point-cards{ grid-template-columns:1fr; } }
+
+    /* ===== 主题切换按钮 ===== */
+    .theme-toggle {
+      width:34px; height:34px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(255,255,255,.04); border:1px solid var(--border-subtle);
+      cursor:pointer; color:var(--text-secondary);
+      transition: all .3s ease; flex-shrink:0;
+    }
+    .theme-toggle:hover { color:var(--accent-purple); border-color:var(--accent-purple); transform: rotate(20deg); }
+    .theme-toggle svg { width:16px; height:16px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .theme-toggle .icon-sun { display:none; }
+    [data-theme="light"] .theme-toggle .icon-sun { display:block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display:none; }
+
+    /* ===== 顶部阅读进度条 ===== */
+    .scroll-progress {
+      position:fixed; top:0; left:0; height:2px; width:0;
+      background: var(--gradient-main); z-index: 1001;
+      transition: width .1s linear; box-shadow: 0 0 8px rgba(168,85,247,.5);
+    }
+
+    /* ===== Preloader ===== */
+    .preloader {
+      position:fixed; inset:0; z-index:9999;
+      background: var(--bg-primary);
+      display:flex; align-items:center; justify-content:center;
+      transition: opacity .6s ease, visibility .6s ease;
+    }
+    .preloader.hidden { opacity:0; visibility:hidden; pointer-events:none; }
+    .preloader-orb {
+      width:54px; height:54px;
+      border-radius:58% 42% 53% 47% / 45% 55% 45% 55%;
+      background: var(--gradient-main);
+      animation: orbBlob 4s ease-in-out infinite, preloaderPulse 1.4s ease-in-out infinite;
+      box-shadow: 0 0 28px rgba(168,85,247,.6);
+    }
+    @keyframes preloaderPulse { 0%,100%{transform:scale(.85);opacity:.7} 50%{transform:scale(1.1);opacity:1} }
+    @keyframes orbBlob {
+      0%   { border-radius:58% 42% 53% 47% / 45% 55% 45% 55%; }
+      50%  { border-radius:42% 58% 52% 48% / 60% 40% 55% 45%; }
+      100% { border-radius:58% 42% 53% 47% / 45% 55% 45% 55%; }
+    }
+
+    /* ===== 回到顶部按钮 ===== */
+    .back-top {
+      position:fixed; bottom:2rem; right:2rem; z-index:100;
+      width:42px; height:42px; border-radius:50%;
+      background: var(--bg-card); border:1px solid var(--border-subtle);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; color:var(--text-secondary);
+      opacity:0; visibility:hidden; transform:translateY(10px); transition: all .35s ease;
+    }
+    .back-top.visible { opacity:1; visibility:visible; transform:translateY(0); }
+    .back-top:hover { border-color:var(--accent-purple); color:var(--accent-purple); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(168,85,247,.25); }
+    .back-top svg { width:18px; height:18px; stroke:currentColor; stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  </style>
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div class="preloader" id="preloader"><div class="preloader-orb"></div></div>
+  <!-- 阅读进度条 -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Nav -->
+  <nav class="cs-nav">
+    <a href="index.html#works" class="cs-back">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      ← BACK TO HOME
+    </a>
+    <div style="display:flex; align-items:center; gap:.8rem;">
+      <div class="cs-logo">LEI.</div>
+      <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换主题 (T)">
+        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="cs-hero">
+    <div class="hero-dot"></div>
+    <div class="container">
+      <h1>零工有靠 <span class="highlight">求职 APP</span></h1>
+      <div class="cs-subtitle">JOB SEARCH / MOBILE APP · GIG ECONOMY</div>
+
+      <dl class="cs-meta reveal">
+        <div class="cs-meta-item">
+          <dt>TIME</dt>
+          <dd>2025 – 2026</dd>
+        </div>
+        <div class="cs-meta-item">
+          <dt>ROLE</dt>
+          <dd>UI/UX Design<br><span style="color:var(--text-secondary)">Full-stack Visual / Interaction</span></dd>
+        </div>
+        <div class="cs-meta-item">
+          <dt>PLATFORM</dt>
+          <dd>iOS / Android<br><span style="color:var(--text-secondary)">Mobile App</span></dd>
+        </div>
+      </dl>
+
+      <!-- 封面大图 — 设计总览 -->
+      <div class="cs-img-full reveal">
+        <img src="assets/jobapp/case-study.jpg" alt="零工有靠 — 完整 Case Study">
+      </div>
+    </div>
+  </section>
+
+  <!-- 项目介绍 -->
+  <section class="sec" id="intro">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">项目介绍</h2>
+      </div>
+      <div class="cs-text reveal">
+        <p><strong>零工有靠</strong>是一款面向<strong>灵活用工群体</strong>的求职与兼职服务平台，以「<strong>米米周聊</strong>」为品牌 IP 形象，为用户提供<strong>岗位发现、地图找工、在线报名、签到奖励</strong>等一站式服务。</p>
+        <p>视觉体系采用<strong>清新明亮的嫩绿色作为主色调</strong>，搭配圆润可爱的 3D IP 图标与角色，传递轻松、可信赖、充满活力的品牌调性。设计贯穿从首页信息架构到核心业务链路的全流程，兼顾用户转化效率与情感化体验。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 首页设计：P1 + P2 -->
+  <section class="sec" id="home-design">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">首页设计</h2>
+      </div>
+
+      <div class="point-cards reveal">
+        <div class="point-card">
+          <div class="point-label">P1 — 兼职指南</div>
+          <h4>视觉层</h4>
+          <p>头部 P1 区域采用<strong>明亮清新的主题绿色</strong>，视觉设计简洁明了。营造轻松活泼的兼职氛围，满足用户快速获取信息的刚需，同时强化了对于产品的特色感知。</p>
+        </div>
+        <div class="point-card">
+          <div class="point-label">P1 — 兼职指南</div>
+          <h4>功能层</h4>
+          <p>风格一致性 + 产品功能层级清晰，让新用户一眼理解核心价值。「多云转晴」的天气隐喻暗示找到好工作的美好预期。</p>
+        </div>
+        <div class="point-card">
+          <div class="point-label">P2 — 金刚区 / 磁片区</div>
+          <h4>功能层</h4>
+          <p>针对有明确目标的用户，设置常用功能的入口对首屏进行分流。<strong>视觉层采用与业务相关的元素图标</strong>，结合前瞻定义的视觉风格，采用<strong>萌系能量 3D 质感加强视觉冲击力</strong>。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 岗位报名 -->
+  <section class="sec" id="job-register">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">岗位报名</h2>
+      </div>
+      <div class="cs-text reveal">
+        <p>基于<strong>LBS 地理位置</strong>的岗位发现流程，用户可通过地图视图直观浏览周边工作机会。三屏交互流程覆盖：<strong>定位 → 浏览附近岗位 → 在线报名</strong>，每一步都经过体验优化，降低用户操作门槛。</p>
+      </div>
+      <div class="cs-img-full reveal">
+        <img src="assets/jobapp/case-study.jpg" alt="岗位报名 — 地图找岗流程">
+      </div>
+    </div>
+  </section>
+
+  <!-- 发现岗位 & 签到活动 -->
+  <section class="sec" id="discovery">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">发现岗位 &amp; 签到活动</h2>
+      </div>
+      <div class="point-cards reveal">
+        <div class="point-card">
+          <div class="point-label">发现岗位</div>
+          <h4>推荐 / 最新 / 高薪 / 日结 / 附近</h4>
+          <p>多维度岗位筛选与分类展示，支持标签切换快速定位目标岗位。卡片式布局突出关键信息（薪资、距离、时间），提升决策效率。</p>
+        </div>
+        <div class="point-card">
+          <div class="point-label">签到活动</div>
+          <h4>签到换购触点定义</h4>
+          <p>通过<strong>每日签到 + 积分兑换</strong>机制提升用户留存与活跃度。活动页面融入品牌 IP 角色，增强趣味性与参与感。</p>
+        </div>
+        <div class="point-card">
+          <div class="point-label">数据埋藏</div>
+          <h4>运营驱动设计</h4>
+          <p>针对不同用户群体（日结/长期/高薪）做差异化内容推荐，结合签到、分享裂变等运营玩法，形成完整的用户增长闭环。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IP 角色延展 -->
+  <section class="sec" id="ip-characters">
+    <div class="container">
+      <div class="sec-head reveal">
+        <h2 class="sec-title">IP 角色延展</h2>
+      </div>
+      <div class="cs-text reveal">
+        <p>围绕「<strong>米米周聊</strong>」品牌 IP 打造完整角色矩阵，每个角色对应一个使用场景或用户状态：<strong>求职宝（找工作）、面试宝（准备中）、兼职宝（接单）、全职宝（入职）、签到宝（打卡）、物流宝（配送）</strong>。统一的 Q 版绿色形象配合差异化动作表情，强化品牌辨识度与情感连接。</p>
+      </div>
+      <div class="cs-img-full reveal">
+        <img src="assets/jobapp/case-study.jpg" alt="IP 角色延展 — 米米周聊全家族">
+      </div>
+    </div>
+  </section>
+
+  <!-- Back -->
+  <section class="sec">
+    <div class="container reveal">
+      <a href="index.html#works" class="back-link">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        ← BACK TO HOME
+      </a>
+    </div>
+  </section>
+
+  <div class="footer-spacer"></div>
+
+  <script>
+    // ===== Preloader 隐藏 =====
+    window.addEventListener('load', function() {
+      var preloader = document.getElementById('preloader');
+      if (preloader) setTimeout(function(){ preloader.classList.add('hidden'); }, 300);
+    });
+
+    // ===== 主题切换 =====
+    var themeToggle = document.getElementById('themeToggle');
+    function applyTheme(theme) {
+      if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      else document.documentElement.removeAttribute('data-theme');
+      try { localStorage.setItem('theme', theme); } catch(e) {}
+    }
+    function toggleTheme() {
+      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      applyTheme(isLight ? 'dark' : 'light');
+    }
+    if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+
+    // ===== 阅读进度条 =====
+    var scrollProgress = document.getElementById('scrollProgress');
+    function updateProgress() {
+      var scrollTop = window.scrollY;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      if (scrollProgress) scrollProgress.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // ===== 回到顶部 =====
+    var backTop = document.getElementById('backTop');
+    function updateBackTop() {
+      if (!backTop) return;
+      if (window.scrollY > 500) backTop.classList.add('visible');
+      else backTop.classList.remove('visible');
+    }
+    window.addEventListener('scroll', updateBackTop, { passive: true });
+    if (backTop) backTop.addEventListener('click', function(){ window.scrollTo({ top:0, behavior:'smooth' }); });
+
+    // ===== 键盘快捷键 =====
+    document.addEventListener('keydown', function(e) {
+      var tag = (e.target.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+      if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(); }
+    });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    },{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+    reveals.forEach(el=>observer.observe(el));
+  </script>
+
+  <!-- 回到顶部 -->
+  <button class="back-top" id="backTop" aria-label="回到顶部" title="回到顶部">
+    <svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+</body>
+</html>
