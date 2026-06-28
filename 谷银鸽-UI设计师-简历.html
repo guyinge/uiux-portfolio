@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>谷银鸽 — UI/UX 设计师简历</title>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --sidebar-bg:#1a1a2e;
+    --sidebar-text:#e8e8f0;
+    --sidebar-text-2:#9090a8;
+    --accent:#6366f1;
+    --accent-2:#a855f7;
+    --main-bg:#ffffff;
+    --main-text:#1a1a2e;
+    --main-text-2:#555566;
+    --border:#e8e8ee;
+    --bg-soft:#f8f8fc;
+    --font:'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif;
+  }
+  body{font-family:var(--font);color:var(--main-text);background:#eaeaf0;line-height:1.6;font-size:13px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .page{max-width:900px;margin:20px auto;background:var(--main-bg);display:grid;grid-template-columns:270px 1fr;box-shadow:0 4px 30px rgba(0,0,0,.08);}
+
+  /* ============ 左侧侧栏 ============ */
+  .sidebar{background:var(--sidebar-bg);color:var(--sidebar-text);padding:32px 24px;}
+  .avatar-area{text-align:center;margin-bottom:24px;}
+  .name{font-size:22px;font-weight:800;letter-spacing:2px;margin-bottom:4px;}
+  .role{font-size:12px;color:var(--accent);font-weight:600;letter-spacing:1px;}
+
+  .side-section{margin-bottom:22px;}
+  .side-title{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.1);text-transform:uppercase;}
+
+  .contact-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:11.5px;}
+  .contact-icon{width:14px;height:14px;flex-shrink:0;color:var(--accent);margin-top:2px;}
+  .contact-text{color:var(--sidebar-text);word-break:break-all;line-height:1.4;}
+  .contact-label{font-size:9.5px;color:var(--sidebar-text-2);display:block;margin-bottom:1px;}
+
+  .skill-item{margin-bottom:10px;}
+  .skill-name{font-size:11.5px;font-weight:600;margin-bottom:4px;display:flex;justify-content:space-between;}
+  .skill-name span{color:var(--sidebar-text-2);font-weight:400;font-size:10px;}
+  .skill-bar{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+  .skill-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:2px;}
+
+  .tag-list{display:flex;flex-wrap:wrap;gap:5px;}
+  .tag-list span{font-size:10.5px;padding:3px 9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--sidebar-text);}
+
+  /* ============ 右侧主内容 ============ */
+  .main{padding:32px 36px;}
+  .main-section{margin-bottom:24px;}
+  .main-title{font-size:15px;font-weight:800;color:var(--main-text);margin-bottom:16px;display:flex;align-items:center;gap:8px;letter-spacing:1px;}
+  .main-title::before{content:'';width:4px;height:18px;background:linear-gradient(180deg,var(--accent),var(--accent-2));border-radius:2px;}
+  .main-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+  /* 自我评价 */
+  .summary{font-size:12.5px;color:var(--main-text-2);line-height:1.85;text-align:justify;background:var(--bg-soft);padding:14px 18px;border-radius:8px;border-left:3px solid var(--accent);}
+  .summary strong{color:var(--main-text);}
+
+  /* 工作经历 */
+  .exp-item{position:relative;padding-left:22px;padding-bottom:18px;}
+  .exp-item::before{content:'';position:absolute;left:4px;top:5px;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(99,102,241,.15);}
+  .exp-item::after{content:'';position:absolute;left:7px;top:16px;bottom:0;width:2px;background:var(--border);}
+  .exp-item:last-child{padding-bottom:0;}
+  .exp-item:last-child::after{display:none;}
+  .exp-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;flex-wrap:wrap;gap:6px;}
+  .exp-head h3{font-size:14px;font-weight:700;}
+  .exp-company{font-size:12px;color:var(--accent);font-weight:600;}
+  .exp-time{font-size:11px;color:var(--main-text-2);background:var(--bg-soft);padding:2px 9px;border-radius:10px;font-weight:500;white-space:nowrap;}
+  .exp-list{list-style:none;}
+  .exp-list li{font-size:12px;color:var(--main-text-2);padding:2px 0 2px 13px;position:relative;line-height:1.7;}
+  .exp-list li::before{content:'';position:absolute;left:0;top:11px;width:4px;height:4px;border-radius:50%;background:var(--accent-2);}
+
+  /* 项目经历 */
+  .proj-item{padding:14px 18px;background:var(--bg-soft);border-radius:8px;margin-bottom:10px;border:1px solid var(--border);}
+  .proj-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;flex-wrap:wrap;gap:6px;}
+  .proj-head h3{font-size:13.5px;font-weight:700;}
+  .proj-tag{font-size:10px;padding:2px 7px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-radius:3px;font-weight:500;}
+  .proj-desc{font-size:12px;color:var(--main-text-2);margin-bottom:8px;line-height:1.75;}
+  .proj-desc strong{color:var(--main-text);}
+  .proj-list{list-style:none;}
+  .proj-list li{font-size:11.5px;color:var(--main-text-2);padding:2px 0 2px 13px;position:relative;line-height:1.7;}
+  .proj-list li::before{content:'▸';position:absolute;left:0;top:0;color:var(--accent);font-size:9px;}
+  .proj-tech{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+  .proj-tech span{font-size:10px;padding:2px 7px;background:#fff;border:1px solid var(--border);border-radius:3px;color:var(--main-text-2);}
+
+  /* 作品集链接 */
+  .portfolio-link{margin-top:18px;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));border-radius:8px;text-align:center;}
+  .portfolio-link a{color:#fff;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:1px;}
+  .portfolio-link .url{font-size:10.5px;opacity:.85;margin-top:3px;color:#fff;}
+
+  @media print{
+    body{background:#fff;font-size:11px;}
+    .page{margin:0;box-shadow:none;grid-template-columns:250px 1fr;}
+    .main-section{margin-bottom:18px;}
+  }
+  @media(max-width:760px){
+    .page{grid-template-columns:1fr;margin:0;}
+    .sidebar{padding:28px 22px;}
+    .main{padding:28px 22px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ 左侧侧栏 ============ -->
+  <aside class="sidebar">
+    <div class="avatar-area">
+      <div class="name">谷银鸽</div>
+      <div class="role">UI/UX 设计师</div>
+    </div>
+
+    <!-- 联系方式 -->
+    <div class="side-section">
+      <div class="side-title">联系方式</div>
+      <div class="contact-item">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <div><span class="contact-label">电话</span><span class="contact-text">156 1797 1267</span></div>
+      </div>
+      <div class="contact-item">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <div><span class="contact-label">邮箱</span><span class="contact-text">g15617971267@163.com</span></div>
+      </div>
+    </div>
+
+    <!-- 求职意向 -->
+    <div class="side-section">
+      <div class="side-title">求职意向</div>
+      <div class="contact-item" style="display:block;">
+        <div style="font-size:11.5px;color:var(--sidebar-text);margin-bottom:4px;">UI/UX 设计师 / 产品助理</div>
+        <div style="font-size:10.5px;color:var(--sidebar-text-2);">期望 8k – 12k · 随时到岗</div>
+      </div>
+    </div>
+
+    <!-- 专业技能 -->
+    <div class="side-section">
+      <div class="side-title">专业技能</div>
+      <div class="skill-item">
+        <div class="skill-name">Figma / XD / Sketch<span>精通</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name">PS / AI<span>精通</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name">Axure / 原型设计<span>熟练</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name">AIGC 工具流<span>熟练</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name">Cinema 4D<span>掌握</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:72%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name">HTML5 / CSS<span>了解</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:60%"></div></div>
+      </div>
+    </div>
+
+    <!-- 工具标签 -->
+    <div class="side-section">
+      <div class="side-title">工具 & 协作</div>
+      <div class="tag-list">
+        <span>After Effects</span>
+        <span>CorelDRAW</span>
+        <span>CAD</span>
+        <span>蓝湖</span>
+        <span>墨刀</span>
+        <span>Xmind</span>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ============ 右侧主内容 ============ -->
+  <main class="main">
+
+    <!-- 自我评价 -->
+    <section class="main-section">
+      <h2 class="main-title">自我评价</h2>
+      <div class="summary">
+        <strong>5 年 UI/UX 设计经验</strong>，深度参与 Web、移动端、小程序、数据可视化大屏等多端产品全链路设计，熟悉 B/C 端设计规范及组件库建设。具备<strong>产品思维</strong>，能从需求分析到高保真输出独立闭环；了解前端实现，注重设计落地与团队协作。近年积极拥抱 <strong>AIGC 工作流</strong>，将 AI 工具融入创意设计流程，显著提升产出效率。
+      </div>
+    </section>
+
+    <!-- 工作经历 -->
+    <section class="main-section">
+      <h2 class="main-title">工作经历</h2>
+
+      <div class="exp-item">
+        <div class="exp-head">
+          <div>
+            <h3>UI 设计师 · 产品经理助理</h3>
+            <div class="exp-company">杭州轻职科技有限公司</div>
+          </div>
+          <div class="exp-time">2025.02 – 2026.05</div>
+        </div>
+        <ul class="exp-list">
+          <li>主导招聘类 APP 从 0 到 1 的全链路设计，覆盖用户调研、信息架构、交互流程、视觉规范与高保真输出</li>
+          <li>搭建可复用设计组件库与标注规范，统一多端视觉语言；引入 AIGC 工作流融入 ICON、运营视觉与 Banner 量产</li>
+          <li>协同产品经理梳理需求，基于用户反馈持续迭代体验细节，优化关键转化路径</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-head">
+          <div>
+            <h3>UI 设计师</h3>
+            <div class="exp-company">江苏庄科信息技术有限公司</div>
+          </div>
+          <div class="exp-time">2022.09 – 2025.02</div>
+        </div>
+        <ul class="exp-list">
+          <li>负责公司官网、Web 产品与活动专题页整体视觉设计及前端走查，确保多端一致性</li>
+          <li>承接产品原型完成交互打磨与高保真输出，沉淀页面模板与规范文档缩短交付周期</li>
+          <li>负责淘宝、京东等电商店铺页面设计，配合促销活动产出专题视觉</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 项目经历 -->
+    <section class="main-section">
+      <h2 class="main-title">项目经历</h2>
+
+      <div class="proj-item">
+        <div class="proj-head">
+          <h3>零工有靠 · 求职 APP</h3>
+          <span class="proj-tag">兼职招聘平台</span>
+        </div>
+        <p class="proj-desc">面向灵活用工群体的一站式求职平台，以「米米周聊」为品牌 IP，提供<strong>岗位发现、LBS 地图找工、在线报名、签到奖励</strong>等核心功能。</p>
+        <ul class="proj-list">
+          <li>全链路负责设计交付，输出 P1 兼职指南 → P2 金刚区 → P3 双列 Feed 流三层信息架构</li>
+          <li>搭建品牌 IP 角色矩阵（8 个职业角色），设计签到运营模块形成用户增长闭环</li>
+        </ul>
+        <div class="proj-tech"><span>Figma</span><span>Axure</span><span>蓝湖</span><span>IP 设计</span></div>
+      </div>
+
+      <div class="proj-item">
+        <div class="proj-head">
+          <h3>AIGC 辅助设计 · 品牌营销视觉全案</h3>
+          <span class="proj-tag">AI 工作流</span>
+        </div>
+        <p class="proj-desc">探索 <strong>AIGC 在商业设计中的全链路应用</strong>，涵盖品牌视觉策划、IP 设计、ICON 延展到运营页与 Banner 产出。</p>
+        <ul class="proj-list">
+          <li>LIBLIB AI 制作 3D 萌系图标集；主导雀巢茶萃夏季营销视觉全案</li>
+          <li>产出多场景运营页及跨品牌 Banner 合集，Midjourney + SD 组合工作流高效输出</li>
+        </ul>
+        <div class="proj-tech"><span>Midjourney</span><span>Stable Diffusion</span><span>LIBLIB AI</span><span>Photoshop</span></div>
+      </div>
+
+      <div class="proj-item">
+        <div class="proj-head">
+          <h3>宠百汇 · 宠物综合服务 APP</h3>
+          <span class="proj-tag">C 端 + 后台</span>
+        </div>
+        <p class="proj-desc">集成<strong>宠圈社区、宠物商城、周边服务</strong>三大功能的综合性 APP，同步设计配套信息管理系统。</p>
+        <ul class="proj-list">
+          <li>搭建思维导图与 Axure 低保真原型，撰写设计规范并把控整体视觉风格</li>
+          <li>同步设计后台管理系统，提交切图与原型交互给前端，全程跟踪开发</li>
+        </ul>
+        <div class="proj-tech"><span>Axure</span><span>XD</span><span>Photoshop</span><span>蓝湖</span></div>
+      </div>
+
+      <div class="proj-item">
+        <div class="proj-head">
+          <h3>江苏省审计厅综合档案管理平台</h3>
+          <span class="proj-tag">B 端 / 政务</span>
+        </div>
+        <p class="proj-desc">面向档案数字化管理需求的<strong>智慧档案管理系统</strong>，覆盖档案全生命周期流程管理。</p>
+        <ul class="proj-list">
+          <li>参与需求研讨梳理功能，负责 B 端后台界面设计规划与高保真输出</li>
+          <li>综合客户反馈制定方案，配合工程师共创界面，保障设计还原度</li>
+        </ul>
+        <div class="proj-tech"><span>B 端设计</span><span>数据可视化</span><span>Axure</span><span>蓝湖</span></div>
+      </div>
+
+    </section>
+
+    <!-- 作品集 -->
+    <div class="portfolio-link">
+      <a href="https://guyinge.github.io/uiux-portfolio/" target="_blank">📦 在线作品集 Portfolio</a>
+      <div class="url">guyinge.github.io/uiux-portfolio</div>
+    </div>
+
+  </main>
+
+</div>
+</body>
+</html>
